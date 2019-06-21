@@ -6,14 +6,17 @@
 
     <fragment android:id="@+id/timer_green_state" android:name="com.example.sometest.timer_green_state"
               android:label="fragment_timer_green_state" tools:layout="@layout/fragment_timer_green_state">
-        <action android:id="@+id/action_timer_green_state_to_timer_red_state" app:destination="@id/timer_red_state"/>
+        <action android:id="@+id/action_timer_green_state_to_timer_red_state" app:destination="@id/timer_red_state"
+                app:enterAnim="@anim/fade_in" app:exitAnim="@anim/fade_out"/>
     </fragment>
     <fragment android:id="@+id/timer_red_state" android:name="com.example.sometest.timer_red_state"
               android:label="fragment_timer_red_state" tools:layout="@layout/fragment_timer_red_state">
-        <action android:id="@+id/action_timer_red_state_to_timer_green_state" app:destination="@id/timer_green_state"/>
+        <action android:id="@+id/action_timer_red_state_to_timer_green_state" app:destination="@id/timer_green_state"
+                app:enterAnim="@anim/fade_in" app:exitAnim="@anim/fade_out"/>
     </fragment>
     <fragment android:id="@+id/start_page" android:name="com.example.sometest.start_page"
               android:label="fragment_start_page" tools:layout="@layout/fragment_start_page">
-        <action android:id="@+id/action_start_page_to_timer_red_state" app:destination="@id/timer_red_state"/>
+        <action android:id="@+id/action_start_page_to_timer_red_state" app:destination="@id/timer_red_state"
+                app:enterAnim="@anim/fade_in" app:exitAnim="@anim/fade_out"/>
     </fragment>
 </navigation>
