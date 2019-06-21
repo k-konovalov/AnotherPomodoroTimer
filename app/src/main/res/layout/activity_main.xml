@@ -8,7 +8,7 @@
         tools:context=".MainActivity"
         android:background="#00F80000">
     <fragment
-            android:id="@+id/btnStart"
+            android:id="@+id/myNavHostFragment"
             android:name="androidx.navigation.fragment.NavHostFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
