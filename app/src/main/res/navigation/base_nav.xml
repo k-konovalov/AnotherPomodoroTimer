@@ -4,7 +4,17 @@
             xmlns:tools="http://schemas.android.com/tools"
             android:id="@+id/base_nav"
             app:startDestination="@id/start_page">
-
+    <fragment
+            android:id="@+id/start_page"
+            android:name="com.example.sometest.StartPageFragment"
+            android:label="fragment_start_page"
+            tools:layout="@layout/fragment_start_page">
+        <action
+                android:id="@+id/action_start_page_to_timer_red_state"
+                app:destination="@id/timer_red_state"
+                app:enterAnim="@anim/fade_in"
+                app:exitAnim="@anim/fade_out"/>
+    </fragment>
     <fragment
             android:id="@+id/timer_green_state"
             android:name="com.example.sometest.GreenStateFragment"
@@ -27,15 +37,5 @@
                 app:enterAnim="@anim/fade_in"
                 app:exitAnim="@anim/fade_out"/>
     </fragment>
-    <fragment
-            android:id="@+id/start_page"
-            android:name="com.example.sometest.StartPageFragment"
-            android:label="fragment_start_page"
-            tools:layout="@layout/fragment_start_page">
-        <action
-                android:id="@+id/action_start_page_to_timer_red_state"
-                app:destination="@id/timer_red_state"
-                app:enterAnim="@anim/fade_in"
-                app:exitAnim="@anim/fade_out"/>
-    </fragment>
+
 </navigation>
