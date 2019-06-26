@@ -16,18 +16,12 @@ class StartPageFragment : Fragment() {
     //private lateinit var viewModel: AppViewModel
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        try {
         val binding:FragmentStartPageBinding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_start_page, container, false)
         binding.btnStart.setOnClickListener {
               v: View -> v.findNavController().navigate(StartPageFragmentDirections.actionStartPageToTimerRedState())
         }
-            return binding.root
-        }
-        catch (e: android.view.InflateException) {
-            Log.e("StartPage", "onCreateView", e);
-            throw Exception("Hi There!!!");
-        }
+        return binding.root
         // Inflate the layout for this fragment
 
     }
