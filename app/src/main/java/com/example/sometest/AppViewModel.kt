@@ -38,7 +38,7 @@ class AppViewModel: ViewModel() {
     }
     //Our timer
     private val timer: CountDownTimer
-    // The list of words - the front of the list is the next word to guess
+    // The list of words
     private lateinit var wordList: MutableList<String>
 
     //LiveData and encapsulation

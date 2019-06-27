@@ -1,13 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
     <!-- Use a data block to declare variables. -->
-    <data>
-        <!-- Declare a variable by specifying a name and a data type. -->
-        <!-- Use fully qualified name for the type. -->
-    <variable
-            name="DataForTimer"
-            type="com.example.sometest.DataForTimer" />
-    </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
             xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:tools="http://schemas.android.com/tools"
