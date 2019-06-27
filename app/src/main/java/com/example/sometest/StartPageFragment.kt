@@ -13,8 +13,6 @@ import com.example.sometest.databinding.FragmentStartPageBinding
 
 class StartPageFragment : Fragment() {
 
-    //private lateinit var viewModel: AppViewModel
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val binding:FragmentStartPageBinding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_start_page, container, false)

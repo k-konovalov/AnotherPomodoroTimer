@@ -17,9 +17,9 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //Его надо было убирать т.к. биндим иначе все падает нахер
-        //setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_main)
 
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+       // binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
         //val navController = this.findNavController(R.id.myNavHostFragment)
         //NavigationUI.setupActionBarWithNavController(this, navController)
