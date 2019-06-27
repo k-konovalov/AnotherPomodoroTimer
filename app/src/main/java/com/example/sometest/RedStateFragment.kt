@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.Observer
@@ -28,6 +29,10 @@ class RedStateFragment : Fragment(),LifecycleObserver {
 
         val binding: FragmentTimerRedStateBinding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_timer_red_state, container, false)
+
+        binding.txtTextView.setOnClickListener {
+            Toast.makeText(activity, viewModel.resetList(), Toast.LENGTH_SHORT).show()
+        }
 
         viewModel=ViewModelProviders.of(this).get(AppViewModel::class.java)
 
@@ -49,11 +54,10 @@ class RedStateFragment : Fragment(),LifecycleObserver {
                 viewModel.onBuzzComplete()
             }
         })
+
         return binding.root
     }
-    private fun oldBuzz(pattern: LongArray){
 
-    }
     private fun buzz(pattern: LongArray) {
         activity?.getSystemService(Context.VIBRATOR_SERVICE)
         val buzzer = activity?.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator

@@ -1,9 +1,12 @@
 package com.example.sometest
 
+import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import android.os.CountDownTimer
+import android.widget.Toast
+import kotlin.random.Random
 
 private val CORRECT_BUZZ_PATTERN = longArrayOf(100, 100, 100, 100, 100, 100)
 private val PANIC_BUZZ_PATTERN = longArrayOf(0, 200)
@@ -31,7 +34,8 @@ class AppViewModel: ViewModel() {
     }
     //Our timer
     private val timer: CountDownTimer
-
+    // The list of words - the front of the list is the next word to guess
+    private lateinit var wordList: MutableList<String>
     //LiveData and encapsulation
     //Time
     private val _currentTime=MutableLiveData<Long>()
@@ -47,10 +51,16 @@ class AppViewModel: ViewModel() {
     val eventBuzz: LiveData<BuzzType>
         get() = _eventBuzz
 
+    // The current word
+    private val _word = MutableLiveData<String>()
+    val word: LiveData<String>
+        get() = _word
+
     fun onCountDownFinish(){
         _eventCountDownFinish.value=false
     }
     init {
+        resetList()
         timer = object : CountDownTimer(COUNTDOWN_TIME, ONE_SECOND) {
             override fun onTick(millisUntilFinished: Long) {
                 _currentTime.value=(millisUntilFinished/ ONE_SECOND)
@@ -63,6 +73,19 @@ class AppViewModel: ViewModel() {
             }
         }
         timer.start()
+    }
+
+    fun resetList():String? {
+        wordList = mutableListOf(
+            "занят",
+            "ОН занят",
+            "кожанный мешок занят",
+            "пожалуйста, не трогай",
+            "ты серьезно?"
+        )
+        //wordList.shuffle()
+        _word.value = wordList[(0..wordList.lastIndex).random()]
+        return _word.value
     }
 
     fun onBuzzComplete() {
