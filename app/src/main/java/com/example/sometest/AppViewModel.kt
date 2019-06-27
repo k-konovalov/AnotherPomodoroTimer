@@ -5,10 +5,23 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import android.os.CountDownTimer
 
+private val CORRECT_BUZZ_PATTERN = longArrayOf(100, 100, 100, 100, 100, 100)
+private val PANIC_BUZZ_PATTERN = longArrayOf(0, 200)
+private val GAME_OVER_BUZZ_PATTERN = longArrayOf(0, 1000)
+private val NO_BUZZ_PATTERN = longArrayOf(0)
+
 class AppViewModel: ViewModel() {
+
+    enum class BuzzType(val pattern: LongArray) {
+        CORRECT(CORRECT_BUZZ_PATTERN),
+        GAME_OVER(GAME_OVER_BUZZ_PATTERN),
+        COUNTDOWN_PANIC(PANIC_BUZZ_PATTERN),
+        NO_BUZZ(NO_BUZZ_PATTERN)
+    }
+
     companion object{
         //Total time of the session
-        private const val COUNTDOWN_TIME = 25000L
+        private const val COUNTDOWN_TIME = 25000L//60000L*25
 
         //Milliseconds in one second
         private const val ONE_SECOND = 1000L
@@ -29,6 +42,11 @@ class AppViewModel: ViewModel() {
     private val _eventCountDownFinish = MutableLiveData<Boolean>()
     val eventCountDownFinish: LiveData<Boolean>
         get() = _eventCountDownFinish
+
+    private val _eventBuzz = MutableLiveData<BuzzType>()
+    val eventBuzz: LiveData<BuzzType>
+        get() = _eventBuzz
+
     fun onCountDownFinish(){
         _eventCountDownFinish.value=false
     }
@@ -40,9 +58,14 @@ class AppViewModel: ViewModel() {
 
             override fun onFinish() {
                 _currentTime.value = DONE
+                _eventBuzz.value = BuzzType.GAME_OVER
                 _eventCountDownFinish.value=true
             }
         }
         timer.start()
+    }
+
+    fun onBuzzComplete() {
+        _eventBuzz.value = BuzzType.NO_BUZZ
     }
 }

@@ -1,6 +1,10 @@
 package com.example.sometest
 
+import android.content.Context
+import android.os.Build
 import android.os.Bundle
+import android.os.VibrationEffect
+import android.os.Vibrator
 import android.text.format.DateUtils
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -10,9 +14,8 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import androidx.navigation.fragment.findNavController
 import com.example.sometest.databinding.FragmentTimerRedStateBinding
-import kotlinx.android.synthetic.main.fragment_timer_red_state.*
+import androidx.navigation.fragment.NavHostFragment.findNavController
 
 class RedStateFragment : Fragment(),LifecycleObserver {
 
@@ -39,13 +42,31 @@ class RedStateFragment : Fragment(),LifecycleObserver {
                 viewModel.onCountDownFinish()
             }
         })
-
+        // Buzzes when triggered with different buzz events
+        viewModel.eventBuzz.observe(this, Observer { buzzType ->
+            if (buzzType != AppViewModel.BuzzType.NO_BUZZ) {
+                buzz(buzzType.pattern)
+                viewModel.onBuzzComplete()
+            }
+        })
         return binding.root
     }
+    private fun oldBuzz(pattern: LongArray){
 
-
-    fun switchNav( view: View){
-        //Navigation.findNavController(view).navigate(RedStateFragmentDirections.actionTimerRedStateToTimerGreenState())
+    }
+    private fun buzz(pattern: LongArray) {
+        activity?.getSystemService(Context.VIBRATOR_SERVICE)
+        val buzzer = activity?.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+        //val buzzer = activity?.getSystemService<Vibrator>()
+        buzzer?.let {
+             //Vibrate for 500 milliseconds
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                buzzer.vibrate(VibrationEffect.createWaveform(pattern, -1))
+            } else {
+                //deprecated in API 26
+                buzzer.vibrate(pattern, -1)
+            }
+        }
     }
 
 }
