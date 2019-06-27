@@ -10,6 +10,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import com.example.sometest.databinding.FragmentTimerRedStateBinding
 import kotlinx.android.synthetic.main.fragment_timer_red_state.*
 
@@ -31,6 +32,13 @@ class RedStateFragment : Fragment(),LifecycleObserver {
             binding.txtTextView.text= DateUtils.formatElapsedTime(newTime)
         })
 
+        viewModel.eventCountDownFinish.observe(this, Observer {  isFinished ->
+            if(isFinished){
+                val action = RedStateFragmentDirections.actionTimerRedStateToTimerGreenState()
+                findNavController(this).navigate(action)
+                viewModel.onCountDownFinish()
+            }
+        })
 
         return binding.root
     }

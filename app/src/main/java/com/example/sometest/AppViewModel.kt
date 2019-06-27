@@ -29,6 +29,9 @@ class AppViewModel: ViewModel() {
     private val _eventCountDownFinish = MutableLiveData<Boolean>()
     val eventCountDownFinish: LiveData<Boolean>
         get() = _eventCountDownFinish
+    fun onCountDownFinish(){
+        _eventCountDownFinish.value=false
+    }
     init {
         timer = object : CountDownTimer(COUNTDOWN_TIME, ONE_SECOND) {
             override fun onTick(millisUntilFinished: Long) {
