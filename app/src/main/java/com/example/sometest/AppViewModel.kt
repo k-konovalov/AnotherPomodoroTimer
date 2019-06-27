@@ -1,11 +1,15 @@
 package com.example.sometest
 
 import android.content.Context
+import android.graphics.Color
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import android.os.CountDownTimer
+import android.view.View
+import android.widget.TextView
 import android.widget.Toast
+import com.google.android.material.snackbar.Snackbar
 import kotlin.random.Random
 
 private val CORRECT_BUZZ_PATTERN = longArrayOf(100, 100, 100, 100, 100, 100)
@@ -36,6 +40,7 @@ class AppViewModel: ViewModel() {
     private val timer: CountDownTimer
     // The list of words - the front of the list is the next word to guess
     private lateinit var wordList: MutableList<String>
+
     //LiveData and encapsulation
     //Time
     private val _currentTime=MutableLiveData<Long>()
@@ -90,5 +95,18 @@ class AppViewModel: ViewModel() {
 
     fun onBuzzComplete() {
         _eventBuzz.value = BuzzType.NO_BUZZ
+    }
+
+    fun createSnack(view:View){
+        val snackbar = Snackbar.make(view, resetList().toString(),
+            Snackbar.LENGTH_LONG)//.setAction("Action", null)
+        //snackbar.setActionTextColor(Color.WHITE)
+        val snackbarView = snackbar.view
+        snackbarView.setBackgroundColor(Color.BLACK)
+        val textView = snackbarView.findViewById<TextView>(R.id.snackbar_text)
+        textView.setTextColor(Color.WHITE)
+        textView.textSize = 28f
+        textView.textAlignment = View.TEXT_ALIGNMENT_CENTER
+        snackbar.show()
     }
 }
