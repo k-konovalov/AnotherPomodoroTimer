@@ -35,13 +35,12 @@ class Timer(lifecycle: Lifecycle) : LifecycleObserver {
     }
 
     //@OnLifecycleEvent(Lifecycle.Event.ON_START)
-    fun startTimer( view: View, txtViewInFun: TextView,over: Int) {
+    fun startTimer(txtViewInFun: TextView,over: Int) {
         // Create the runnable action, which prints out a log and increments the seconds counter
         secondsCount = over
         runnable = Runnable {
             if (secondsCount==0){
                 stopTimer()
-                switchNav(view)
             }
             secondsCount--
             txtViewInFun.text = "$secondsCount"
@@ -59,7 +58,7 @@ class Timer(lifecycle: Lifecycle) : LifecycleObserver {
         // In this case, no looper is defined, and it defaults to the main or UI thread.
     }
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
+    @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
     fun stopTimer() {
         // Removes all pending posts of runnable from the handler's queue, effectively stopping the
         // timer

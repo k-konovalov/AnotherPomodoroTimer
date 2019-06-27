@@ -22,7 +22,5 @@ class StartPageFragment : Fragment() {
               v: View -> v.findNavController().navigate(StartPageFragmentDirections.actionStartPageToTimerRedState())
         }
         return binding.root
-        // Inflate the layout for this fragment
-
     }
 }
