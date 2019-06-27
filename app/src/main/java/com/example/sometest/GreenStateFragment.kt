@@ -8,15 +8,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
-import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.NavHostFragment.findNavController
 import com.example.sometest.databinding.FragmentTimerGreenStateBinding
 
 
-class GreenStateFragment : Fragment() {
+class GreenStateFragment : Fragment(), LifecycleObserver {
 
     private lateinit var viewModel: RestViewModel
 

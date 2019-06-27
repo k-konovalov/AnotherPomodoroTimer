@@ -42,5 +42,6 @@ class RestViewModel:ViewModel(){
                 _currentTime.value=(millisUntilFinished/ ONE_SECOND)
             }
         }
+        timer.start()
     }
 }
