@@ -1,7 +1,11 @@
 package com.example.sometest
 
 
+import android.content.Context
+import android.os.Build
 import android.os.Bundle
+import android.os.VibrationEffect
+import android.os.Vibrator
 import android.text.format.DateUtils
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -41,7 +45,29 @@ class GreenStateFragment : Fragment(), LifecycleObserver {
                 viewModel.onCountDownFinish()
             }
         })
+
+        viewModel.eventBuzz.observe(this, Observer { buzzType ->
+            if (buzzType != RestViewModel.BuzzType.NO_BUZZ) {
+                buzz(buzzType.pattern)
+                viewModel.onBuzzComplete()
+            }
+        })
         return binding.root
+    }
+
+    private fun buzz(pattern: LongArray) {
+        activity?.getSystemService(Context.VIBRATOR_SERVICE)
+        val buzzer = activity?.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+        //val buzzer = activity?.getSystemService<Vibrator>()
+        buzzer?.let {
+            //Vibrate for 500 milliseconds
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                buzzer.vibrate(VibrationEffect.createWaveform(pattern, -1))
+            } else {
+                //deprecated in API 26
+                buzzer.vibrate(pattern, -1)
+            }
+        }
     }
 
 

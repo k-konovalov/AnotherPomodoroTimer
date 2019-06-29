@@ -24,7 +24,7 @@ import com.google.android.material.snackbar.Snackbar
 class RedStateFragment : Fragment(),LifecycleObserver {
 
     private lateinit var viewModel: AppViewModel
-
+    var cycle=0
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -32,10 +32,10 @@ class RedStateFragment : Fragment(),LifecycleObserver {
 
         val binding: FragmentTimerRedStateBinding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_timer_red_state, container, false)
-
+        cycle++
         binding.txtTextView.setOnClickListener {
             //Toast.makeText(activity, viewModel.resetList(), Toast.LENGTH_SHORT).show()
-            viewModel.createSnack(it)
+            viewModel.createSnack(it,cycle)
         }
 
         viewModel=ViewModelProviders.of(this).get(AppViewModel::class.java)

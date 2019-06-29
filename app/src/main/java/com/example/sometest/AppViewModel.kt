@@ -39,7 +39,7 @@ class AppViewModel: ViewModel() {
     //Our timer
     private val timer: CountDownTimer
     // The list of words
-    private lateinit var wordList: MutableList<String>
+//    private lateinit var wordList: MutableList<String>
 
     //LiveData and encapsulation
     //Time
@@ -65,7 +65,7 @@ class AppViewModel: ViewModel() {
         _eventCountDownFinish.value=false
     }
     init {
-        resetList()
+//        resetList()
         timer = object : CountDownTimer(COUNTDOWN_TIME, ONE_SECOND) {
             override fun onTick(millisUntilFinished: Long) {
                 _currentTime.value=(millisUntilFinished/ ONE_SECOND)
@@ -80,25 +80,25 @@ class AppViewModel: ViewModel() {
         timer.start()
     }
 
-    fun resetList():String? {
-        wordList = mutableListOf(
-            "занят",
-            "ОН занят",
-            "кожанный мешок занят",
-            "пожалуйста, не трогай",
-            "ты серьезно?"
-        )
-        //wordList.shuffle()
-        _word.value = wordList[(0..wordList.lastIndex).random()]
-        return _word.value
-    }
+//    fun resetList():String? {
+//        wordList = mutableListOf(
+//            "занят",
+//            "ОН занят",
+//            "кожанный мешок занят",
+//            "пожалуйста, не трогай",
+//            "ты серьезно?"
+//        )
+//        //wordList.shuffle()
+//        _word.value = wordList[(0..wordList.lastIndex).random()]
+//        return _word.value
+//    }
 
     fun onBuzzComplete() {
         _eventBuzz.value = BuzzType.NO_BUZZ
     }
 
-    fun createSnack(view:View){
-        val snackbar = Snackbar.make(view, resetList().toString(),
+    fun createSnack(view:View,cycle:Int){
+        val snackbar = Snackbar.make(view, "This is the "+cycle.toString()+" cycle",
             Snackbar.LENGTH_LONG)//.setAction("Action", null)
         //snackbar.setActionTextColor(Color.WHITE)
         val snackbarView = snackbar.view
