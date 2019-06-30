@@ -25,7 +25,7 @@ const val KEY_CYCLE="key_cycle"
 class RedStateFragment : Fragment(),LifecycleObserver {
 
     private lateinit var viewModel: AppViewModel
-    var cycle: Int = 0
+
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putInt(KEY_CYCLE,cycle)
