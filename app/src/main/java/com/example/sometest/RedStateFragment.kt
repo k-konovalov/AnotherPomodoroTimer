@@ -21,10 +21,23 @@ import com.example.sometest.databinding.FragmentTimerRedStateBinding
 import androidx.navigation.fragment.NavHostFragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 
+const val KEY_CYCLE="key_cycle"
 class RedStateFragment : Fragment(),LifecycleObserver {
 
     private lateinit var viewModel: AppViewModel
-    var cycle=0
+    var cycle: Int = 0
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putInt(KEY_CYCLE,cycle)
+    }
+
+//    override fun onViewStateRestored(savedInstanceState: Bundle?) {
+//        super.onViewStateRestored(savedInstanceState)
+//            if (savedInstanceState!=null){
+//                cycle=savedInstanceState.getInt(KEY_CYCLE,0)
+//            }
+//    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -32,6 +45,9 @@ class RedStateFragment : Fragment(),LifecycleObserver {
 
         val binding: FragmentTimerRedStateBinding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_timer_red_state, container, false)
+        if (savedInstanceState!=null){
+            cycle=savedInstanceState.getInt(KEY_CYCLE,0)
+        }
         cycle++
         binding.txtTextView.setOnClickListener {
             //Toast.makeText(activity, viewModel.resetList(), Toast.LENGTH_SHORT).show()

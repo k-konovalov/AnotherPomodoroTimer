@@ -56,10 +56,11 @@ class AppViewModel: ViewModel() {
     val eventBuzz: LiveData<BuzzType>
         get() = _eventBuzz
 
-    // The current word
-    private val _word = MutableLiveData<String>()
-    val word: LiveData<String>
-        get() = _word
+//    // The current word
+//    private val _word = MutableLiveData<String>()
+//    val word: LiveData<String>
+//        get() = _word
+
 
     fun onCountDownFinish(){
         _eventCountDownFinish.value=false
