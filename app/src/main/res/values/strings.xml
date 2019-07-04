@@ -1,5 +1,4 @@
 <resources>
-    <string name="app_name">SomeTest</string>
+    <string name="app_name">Simple Pomodoro</string>
     <string name="txtBeforeRed">Не беспокоить</string>
-
 </resources>
