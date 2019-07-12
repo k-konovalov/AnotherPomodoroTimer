@@ -14,6 +14,8 @@
                 app:destination="@id/timer_red_state"
                 app:enterAnim="@anim/fade_in"
                 app:exitAnim="@anim/fade_out"/>
+        <action android:id="@+id/action_start_page_to_settings_page" app:destination="@id/settings_page"
+                app:enterAnim="@anim/fade_in" app:exitAnim="@anim/fade_out"/>
     </fragment>
     <fragment
             android:id="@+id/timer_green_state"
@@ -36,6 +38,12 @@
                 app:destination="@id/timer_green_state"
                 app:enterAnim="@anim/fade_in"
                 app:exitAnim="@anim/fade_out"/>
+    </fragment>
+    <fragment android:id="@+id/settings_page" android:name="com.example.sometest.SettingsPageFragment"
+              android:label="fragment_settings_page"
+    tools:layout="@layout/fragment_settings_page">
+        <action android:id="@+id/action_settings_page_to_start_page" app:destination="@id/start_page"
+                app:enterAnim="@anim/fade_in" app:exitAnim="@anim/fade_out"/>
     </fragment>
 
 </navigation>

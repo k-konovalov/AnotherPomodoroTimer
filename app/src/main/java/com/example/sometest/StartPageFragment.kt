@@ -19,6 +19,9 @@ class StartPageFragment : Fragment() {
         binding.btnStart.setOnClickListener {
               v: View -> v.findNavController().navigate(StartPageFragmentDirections.actionStartPageToTimerRedState())
         }
+        binding.btnToSettings.setOnClickListener {
+                v: View -> v.findNavController().navigate(StartPageFragmentDirections.actionStartPageToSettingsPage())
+        }
         return binding.root
     }
 }

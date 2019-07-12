@@ -1,0 +1,10 @@
+<resources>
+    <integer name="defaultProgressWorkTime">25</integer>
+    <integer name="defaultProgressRestTime">5</integer>
+    <integer name="defaultProgressCyclesBeforeRest">4</integer>
+    <integer name="defaultProgressBigRestTime">15</integer>
+    <integer name="defaultMaxWorkTime">50</integer>
+    <integer name="defaultMaxRestTime">10</integer>
+    <integer name="defaultMaxCyclesBeforeRest">10</integer>
+    <integer name="defaultMaxBigRestTime">30</integer>
+</resources>
