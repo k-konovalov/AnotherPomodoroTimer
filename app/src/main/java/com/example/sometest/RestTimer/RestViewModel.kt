@@ -1,15 +1,17 @@
-package com.example.sometest
+package com.example.sometest.RestTimer
 
+import android.content.SharedPreferences
 import android.os.CountDownTimer
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.sometest.REST_TIME
+import com.example.sometest.pref
 
 private val CORRECT_BUZZ_PATTERN = longArrayOf(100, 100, 100, 100, 100, 100)
 private val PANIC_BUZZ_PATTERN = longArrayOf(0, 200)
 private val GAME_OVER_BUZZ_PATTERN = longArrayOf(0, 1000)
 private val NO_BUZZ_PATTERN = longArrayOf(0)
-
 class RestViewModel:ViewModel(){
     companion object{
         //Total time of the session
@@ -52,9 +54,13 @@ class RestViewModel:ViewModel(){
     }
 
     init {
-        timer= object : CountDownTimer(COUNTDOWN_TIME, ONE_SECOND) {
+
+        timer= object : CountDownTimer(
+            COUNTDOWN_TIME* pref.getLong(REST_TIME,5),
+            ONE_SECOND
+        ) {
             override fun onFinish() {
-                _currentTime.value=DONE
+                _currentTime.value= DONE
                 _eventCountDownFinish.value=true
             }
 

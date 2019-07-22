@@ -19,7 +19,7 @@
     </fragment>
     <fragment
             android:id="@+id/timer_green_state"
-            android:name="com.example.sometest.GreenStateFragment"
+            android:name="com.example.sometest.RestTimer.GreenStateFragment"
             android:label="fragment_timer_green_state"
             tools:layout="@layout/fragment_timer_green_state">
         <action
@@ -30,7 +30,7 @@
     </fragment>
     <fragment
             android:id="@+id/timer_red_state"
-            android:name="com.example.sometest.RedStateFragment"
+            android:name="com.example.sometest.WorkTimer.RedStateFragment"
             android:label="fragment_timer_red_state"
             tools:layout="@layout/fragment_timer_red_state">
         <action
@@ -39,7 +39,7 @@
                 app:enterAnim="@anim/fade_in"
                 app:exitAnim="@anim/fade_out"/>
     </fragment>
-    <fragment android:id="@+id/settings_page" android:name="com.example.sometest.SettingsPageFragment"
+    <fragment android:id="@+id/settings_page" android:name="com.example.sometest.Settings.SettingsPageFragment"
               android:label="fragment_settings_page"
     tools:layout="@layout/fragment_settings_page">
         <action android:id="@+id/action_settings_page_to_start_page" app:destination="@id/start_page"

@@ -1,6 +1,6 @@
-package com.example.sometest
+package com.example.sometest.WorkTimer
 
-import android.content.Context
+import android.content.SharedPreferences
 import android.graphics.Color
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -8,15 +8,15 @@ import androidx.lifecycle.ViewModel
 import android.os.CountDownTimer
 import android.view.View
 import android.widget.TextView
-import android.widget.Toast
+import com.example.sometest.R
+import com.example.sometest.WORK_TIME
+import com.example.sometest.pref
 import com.google.android.material.snackbar.Snackbar
-import kotlin.random.Random
 
 private val CORRECT_BUZZ_PATTERN = longArrayOf(100, 100, 100, 100, 100, 100)
 private val PANIC_BUZZ_PATTERN = longArrayOf(0, 200)
 private val GAME_OVER_BUZZ_PATTERN = longArrayOf(0, 1000)
 private val NO_BUZZ_PATTERN = longArrayOf(0)
-
 class AppViewModel: ViewModel() {
 
     enum class BuzzType(val pattern: LongArray) {
@@ -39,7 +39,6 @@ class AppViewModel: ViewModel() {
     //Our timer
     private val timer: CountDownTimer
     // The list of words
-//    private lateinit var wordList: MutableList<String>
 
     //LiveData and encapsulation
     //Time
@@ -67,7 +66,10 @@ class AppViewModel: ViewModel() {
     }
     init {
 //        resetList()
-        timer = object : CountDownTimer(COUNTDOWN_TIME, ONE_SECOND) {
+        timer = object : CountDownTimer(
+            COUNTDOWN_TIME* pref.getLong(WORK_TIME,25),
+            ONE_SECOND
+        ) {
             override fun onTick(millisUntilFinished: Long) {
                 _currentTime.value=(millisUntilFinished/ ONE_SECOND)
             }
@@ -99,15 +101,15 @@ class AppViewModel: ViewModel() {
     }
 
     fun createSnack(view:View,cycle:Int){
-        val snackbar = Snackbar.make(view, "This is the "+cycle.toString()+" cycle",
+        val snack = Snackbar.make(view, "This is the "+cycle.toString()+" cycle",
             Snackbar.LENGTH_LONG)//.setAction("Action", null)
         //snackbar.setActionTextColor(Color.WHITE)
-        val snackbarView = snackbar.view
+        val snackbarView = snack.view
         snackbarView.setBackgroundColor(Color.BLACK)
         val textView = snackbarView.findViewById<TextView>(R.id.snackbar_text)
         textView.setTextColor(Color.WHITE)
         textView.textSize = 28f
         textView.textAlignment = View.TEXT_ALIGNMENT_CENTER
-        snackbar.show()
+        snack.show()
     }
 }

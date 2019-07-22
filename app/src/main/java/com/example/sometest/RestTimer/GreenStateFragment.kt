@@ -1,4 +1,4 @@
-package com.example.sometest
+package com.example.sometest.RestTimer
 
 
 import android.content.Context
@@ -16,6 +16,8 @@ import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.NavHostFragment.findNavController
+//import com.example.sometest.GreenStateFragmentDirections
+import com.example.sometest.R
 import com.example.sometest.databinding.FragmentTimerGreenStateBinding
 
 
@@ -29,7 +31,7 @@ class GreenStateFragment : Fragment(), LifecycleObserver {
     ): View? {
         // Inflate the layout for this fragment
         val binding: FragmentTimerGreenStateBinding=DataBindingUtil.inflate(
-            inflater,R.layout.fragment_timer_green_state,container,false
+            inflater, R.layout.fragment_timer_green_state,container,false
         )
 
         viewModel=ViewModelProviders.of(this).get(RestViewModel::class.java)
@@ -40,7 +42,8 @@ class GreenStateFragment : Fragment(), LifecycleObserver {
 
         viewModel.eventCountDownFinish.observe(this, Observer{isFinished ->
             if(isFinished) {
-                val action = GreenStateFragmentDirections.actionTimerGreenStateToTimerRedState()
+                val action =
+                    GreenStateFragmentDirections.actionTimerGreenStateToTimerRedState()
                 findNavController(this).navigate(action)
                 viewModel.onCountDownFinish()
             }

@@ -65,6 +65,6 @@ class Timer(lifecycle: Lifecycle) : LifecycleObserver {
         handler.removeCallbacks(runnable)
     }
     fun switchNav( view: View){
-        findNavController(view).navigate(RedStateFragmentDirections.actionTimerRedStateToTimerGreenState())
+  //      findNavController(view).navigate(RedStateFragmentDirections.actionTimerRedStateToTimerGreenState())
     }
 }
