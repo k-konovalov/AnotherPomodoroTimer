@@ -28,7 +28,7 @@ class AppViewModel: ViewModel() {
 
     companion object{
         //Total time of the session
-        private const val COUNTDOWN_TIME = 25000L//60000L*25
+        private const val COUNTDOWN_TIME = 60000L
 
         //Milliseconds in one second
         private const val ONE_SECOND = 1000L
@@ -103,10 +103,10 @@ class AppViewModel: ViewModel() {
     fun createSnack(view:View,cycle:Int){
         val snack = Snackbar.make(view, "This is the "+cycle.toString()+" cycle",
             Snackbar.LENGTH_LONG)//.setAction("Action", null)
-        //snackbar.setActionTextColor(Color.WHITE)
-        val snackbarView = snack.view
-        snackbarView.setBackgroundColor(Color.BLACK)
-        val textView = snackbarView.findViewById<TextView>(R.id.snackbar_text)
+        //snack.setActionTextColor(Color.WHITE)
+        val snackView = snack.view
+        snackView.setBackgroundColor(Color.BLACK)
+        val textView = snackView.findViewById<TextView>(R.id.snackbar_text)
         textView.setTextColor(Color.WHITE)
         textView.textSize = 28f
         textView.textAlignment = View.TEXT_ALIGNMENT_CENTER

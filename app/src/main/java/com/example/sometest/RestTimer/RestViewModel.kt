@@ -5,8 +5,7 @@ import android.os.CountDownTimer
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.sometest.REST_TIME
-import com.example.sometest.pref
+import com.example.sometest.*
 
 private val CORRECT_BUZZ_PATTERN = longArrayOf(100, 100, 100, 100, 100, 100)
 private val PANIC_BUZZ_PATTERN = longArrayOf(0, 200)
@@ -15,7 +14,7 @@ private val NO_BUZZ_PATTERN = longArrayOf(0)
 class RestViewModel:ViewModel(){
     companion object{
         //Total time of the session
-        private const val COUNTDOWN_TIME = 5000L//60000L*5
+        private const val COUNTDOWN_TIME = 60000L
 
         //Milliseconds in one second
         private const val ONE_SECOND = 1000L
@@ -56,7 +55,9 @@ class RestViewModel:ViewModel(){
     init {
 
         timer= object : CountDownTimer(
-            COUNTDOWN_TIME* pref.getLong(REST_TIME,5),
+            if(cycle%pref.getInt(WORK_CYCLES,4)!=0){COUNTDOWN_TIME * pref.getLong(REST_TIME,5)}
+                    else
+            COUNTDOWN_TIME * pref.getLong(BIG_BREAK,15),
             ONE_SECOND
         ) {
             override fun onFinish() {
