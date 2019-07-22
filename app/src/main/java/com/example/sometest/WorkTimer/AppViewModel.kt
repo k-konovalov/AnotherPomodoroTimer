@@ -38,7 +38,6 @@ class AppViewModel: ViewModel() {
     }
     //Our timer
     private val timer: CountDownTimer
-    // The list of words
 
     //LiveData and encapsulation
     //Time
@@ -55,18 +54,13 @@ class AppViewModel: ViewModel() {
     val eventBuzz: LiveData<BuzzType>
         get() = _eventBuzz
 
-//    // The current word
-//    private val _word = MutableLiveData<String>()
-//    val word: LiveData<String>
-//        get() = _word
-
-
     fun onCountDownFinish(){
         _eventCountDownFinish.value=false
     }
     init {
 //        resetList()
         timer = object : CountDownTimer(
+            //тут достаем из настроек нужное нам значение. По дефолту оно будет каноническим для Pomodoro техники
             COUNTDOWN_TIME* pref.getLong(WORK_TIME,25),
             ONE_SECOND
         ) {
@@ -82,19 +76,6 @@ class AppViewModel: ViewModel() {
         }
         timer.start()
     }
-
-//    fun resetList():String? {
-//        wordList = mutableListOf(
-//            "занят",
-//            "ОН занят",
-//            "кожанный мешок занят",
-//            "пожалуйста, не трогай",
-//            "ты серьезно?"
-//        )
-//        //wordList.shuffle()
-//        _word.value = wordList[(0..wordList.lastIndex).random()]
-//        return _word.value
-//    }
 
     fun onBuzzComplete() {
         _eventBuzz.value = BuzzType.NO_BUZZ
