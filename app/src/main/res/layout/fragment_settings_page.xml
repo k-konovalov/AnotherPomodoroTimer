@@ -60,7 +60,7 @@
                     style="@style/ForTxtInputSettings"
                     android:layout_marginEnd="32dp"/>
             <SeekBar
-                    android:id="@+id/seekBarForCyclesBeforeResr"
+                    android:id="@+id/seekBarForCyclesBeforeRest"
                     style="@style/ForSeekBar"
                     android:progress="@integer/defaultProgressCyclesBeforeRest"
                     android:max="@integer/defaultMaxCyclesBeforeRest"
@@ -75,8 +75,8 @@
                     android:ems="10"
                     android:id="@+id/txtForCyclesBeforeRest"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/seekBarForCyclesBeforeResr"
-                    app:layout_constraintBottom_toBottomOf="@+id/seekBarForCyclesBeforeResr"
+                    app:layout_constraintTop_toTopOf="@+id/seekBarForCyclesBeforeRest"
+                    app:layout_constraintBottom_toBottomOf="@+id/seekBarForCyclesBeforeRest"
                     android:text="@string/defaultCyclesBeforeRest"
                     style="@style/ForTxtInputSettings"
                     android:layout_marginEnd="32dp"/>
@@ -129,7 +129,7 @@
                     android:id="@+id/textView4"
                     style="@style/ForTxtNameForSettings"
                     app:layout_constraintTop_toBottomOf="@+id/seekBarForRelaxTimer"
-                    app:layout_constraintBottom_toTopOf="@+id/seekBarForCyclesBeforeResr"
+                    app:layout_constraintBottom_toTopOf="@+id/seekBarForCyclesBeforeRest"
                     app:layout_constraintStart_toStartOf="parent"
                     android:layout_marginStart="8dp"
                     android:layout_marginEnd="8dp"
@@ -138,7 +138,7 @@
                     android:text="@string/nameBigRestTime"
                     android:id="@+id/textView5"
                     style="@style/ForTxtNameForSettings"
-                    app:layout_constraintTop_toBottomOf="@+id/seekBarForCyclesBeforeResr"
+                    app:layout_constraintTop_toBottomOf="@+id/seekBarForCyclesBeforeRest"
                     app:layout_constraintBottom_toTopOf="@+id/seekBarForBigRest"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/txtForBigRest"
@@ -146,7 +146,7 @@
 
                     android:layout_marginEnd="8dp"/>
             <Button
-                    android:text="Save"
+                    android:text="@string/text_for_prefBtn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/btnSave"

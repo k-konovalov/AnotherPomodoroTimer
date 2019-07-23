@@ -11,5 +11,6 @@
     <string name="nameRestTime">Перерыв</string>
     <string name="nameCyclesBeforeRest">До отдыха</string>
     <string name="nameBigRestTime">Большой перерыв</string>
+    <string name="text_for_prefBtn">Save</string>
 
 </resources>

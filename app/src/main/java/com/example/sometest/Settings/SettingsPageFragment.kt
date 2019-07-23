@@ -5,12 +5,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SeekBar
 import androidx.databinding.DataBindingUtil
+import androidx.navigation.findNavController
 import com.example.sometest.*
 import com.example.sometest.databinding.FragmentSettingsPageBinding
 
-class SettingsPageFragment : Fragment() {
-    lateinit var workTime :String
+class SettingsPageFragment : Fragment(){
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -19,6 +20,7 @@ class SettingsPageFragment : Fragment() {
         val binding: FragmentSettingsPageBinding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_settings_page,container,false
         )
+
         binding.btnSave.setOnClickListener {
             // тут с помощью эдитора кладем в преференсы значения, указывая ключ и собственно значение
             editor.putLong(WORK_TIME,Converter.convertLong(binding.txtForWorkTimer.text.toString()))
@@ -27,8 +29,53 @@ class SettingsPageFragment : Fragment() {
             editor.putLong(REST_TIME,Converter.convertLong(binding.txtForRelaxTimer.text.toString()))
             //Как закончили класть данные в преференсы - обязательно апплай
             editor.apply()
-                //v: View -> v.findNavController().navigate(SettingsPageFragmentDirections.actionSettingsPageToStartPage())
+            it.findNavController().navigate(SettingsPageFragmentDirections.actionSettingsPageToStartPage())
         }
+
+        //Changing the work time
+        binding.seekBarForWorkTimer.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener{
+            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                binding.txtForWorkTimer.setText(progress.toString())
+            }
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {
+            }
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {
+            }
+        })
+
+        //Changing the Big Rest time
+        binding.seekBarForBigRest.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener{
+            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                binding.txtForBigRest.setText(progress.toString())
+            }
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {
+            }
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {
+            }
+        })
+
+        //Changing the work cycles value
+        binding.seekBarForCyclesBeforeRest.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener{
+            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                binding.txtForCyclesBeforeRest.setText(progress.toString())
+            }
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {
+            }
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {
+            }
+        })
+
+        //Changing the rest time
+        binding.seekBarForRelaxTimer.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener{
+            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                binding.txtForRelaxTimer.setText(progress.toString())
+            }
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {
+            }
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {
+            }
+        })
+
         return binding.root
     }
     //TODO: Refactor if needed
