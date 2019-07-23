@@ -21,13 +21,20 @@ class SettingsPageFragment : Fragment(){
             inflater, R.layout.fragment_settings_page,container,false
         )
 
+        binding.txtForRelaxTimer.setText(pref.getLong(REST_TIME,5).toString())
+        binding.txtForCyclesBeforeRest.setText(pref.getInt(WORK_CYCLES,4).toString())
+        binding.txtForBigRest.setText(pref.getLong(BIG_BREAK,15).toString())
+        binding.txtForWorkTimer.setText(pref.getLong(WORK_TIME,25).toString())
+
+
+
         binding.btnSave.setOnClickListener {
-            // тут с помощью эдитора кладем в преференсы значения, указывая ключ и собственно значение
+            // 3)тут с помощью эдитора кладем в преференсы значения, указывая ключ и собственно значение
             editor.putLong(WORK_TIME,Converter.convertLong(binding.txtForWorkTimer.text.toString()))
             editor.putLong(BIG_BREAK,Converter.convertLong(binding.txtForBigRest.text.toString()))
             editor.putInt(WORK_CYCLES,Converter.convertInt(binding.txtForCyclesBeforeRest.text.toString()))
             editor.putLong(REST_TIME,Converter.convertLong(binding.txtForRelaxTimer.text.toString()))
-            //Как закончили класть данные в преференсы - обязательно апплай
+            // 4)Как закончили класть данные в преференсы - обязательно апплай
             editor.apply()
             it.findNavController().navigate(SettingsPageFragmentDirections.actionSettingsPageToStartPage())
         }
@@ -81,12 +88,12 @@ class SettingsPageFragment : Fragment(){
     //TODO: Refactor if needed
     //Это тот самый костыль. Нам разные данные нужны, которые мы из текствью берем, в которых текст.
     //Конвертить внутри моделей стринги в нужные нам типы - не нуль безопасно. Я решил эту проблему вот так.
+
  class Converter{
      companion object{
          fun convertLong(string: String): Long = string.toLong()
          fun convertInt(string: String): Int = string.toInt()
      }
-
  }
 
 }

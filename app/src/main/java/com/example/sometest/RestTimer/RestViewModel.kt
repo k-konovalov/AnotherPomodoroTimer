@@ -55,7 +55,7 @@ class RestViewModel:ViewModel(){
     init {
 
         timer= object : CountDownTimer(
-            if(cycle%pref.getInt(WORK_CYCLES,4)!=0){COUNTDOWN_TIME * pref.getLong(REST_TIME,5)}
+            if(cycle % pref.getInt(WORK_CYCLES,4)!=0){COUNTDOWN_TIME * pref.getLong(REST_TIME,5)}
                     else
             COUNTDOWN_TIME * pref.getLong(BIG_BREAK,15),
             ONE_SECOND

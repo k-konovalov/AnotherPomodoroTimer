@@ -1,16 +1,16 @@
 <resources>
     <string name="app_name">Simple Pomodoro</string>
-    <string name="txtBeforeRed">Не беспокоить</string>
+    <string name="txtBeforeRed">DO NOT DISTURB</string>
 
     <string name="defaultWorkTime">25</string>
     <string name="defaultRestTime">5</string>
     <string name="defaultCyclesBeforeRest">4</string>
     <string name="defaultBigRestTime">15</string>
 
-    <string name="nameWorkTime">Работа</string>
-    <string name="nameRestTime">Перерыв</string>
-    <string name="nameCyclesBeforeRest">До отдыха</string>
-    <string name="nameBigRestTime">Большой перерыв</string>
-    <string name="text_for_prefBtn">Save</string>
+    <string name="nameWorkTime">Working Time(min)</string>
+    <string name="nameRestTime">Break Time(min)</string>
+    <string name="nameCyclesBeforeRest">Work Cycles</string>
+    <string name="nameBigRestTime">Big Break</string>
+    <string name="text_for_prefBtn">Save Options</string>
 
 </resources>
