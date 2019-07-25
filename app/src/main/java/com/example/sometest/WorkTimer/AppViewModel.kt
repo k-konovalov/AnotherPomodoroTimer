@@ -8,9 +8,7 @@ import androidx.lifecycle.ViewModel
 import android.os.CountDownTimer
 import android.view.View
 import android.widget.TextView
-import com.example.sometest.R
-import com.example.sometest.WORK_TIME
-import com.example.sometest.pref
+import com.example.sometest.*
 import com.google.android.material.snackbar.Snackbar
 
 private val CORRECT_BUZZ_PATTERN = longArrayOf(100, 100, 100, 100, 100, 100)
@@ -29,12 +27,14 @@ class AppViewModel: ViewModel() {
     companion object{
         //Total time of the session
         private const val COUNTDOWN_TIME = 60000L
-
+        private const val MINUTE = COUNTDOWN_TIME/1000
         //Milliseconds in one second
         private const val ONE_SECOND = 1000L
 
         // This is when the session is over
         private const val DONE = 0L
+
+        private var currentMaxWorkTime = MINUTE * pref.getLong(WORK_TIME,25)
     }
     //Our timer
     private val timer: CountDownTimer
@@ -61,16 +61,18 @@ class AppViewModel: ViewModel() {
 //        resetList()
         timer = object : CountDownTimer(
             //тут достаем из настроек нужное нам значение. По дефолту оно будет каноническим для Pomodoro техники
-            COUNTDOWN_TIME * pref.getLong(WORK_TIME,25),
+            6000L,
             ONE_SECOND
         ) {
             override fun onTick(millisUntilFinished: Long) {
                 _currentTime.value=(millisUntilFinished/ ONE_SECOND)
+                MainActivity.updateCurrentNotification(currentMaxWorkTime.toInt(),currentTime.value!!.toInt(),"Work Time")
             }
 
             override fun onFinish() {
                 _currentTime.value = DONE
                 _eventBuzz.value = BuzzType.GAME_OVER
+
                 _eventCountDownFinish.value=true
             }
         }
@@ -82,7 +84,7 @@ class AppViewModel: ViewModel() {
     }
 
     fun createSnack(view:View,cycle:Int){
-        val snack = Snackbar.make(view, "This is the "+cycle.toString()+" cycle",
+        val snack = Snackbar.make(view, "This is the $cycle cycle",
             Snackbar.LENGTH_LONG)//.setAction("Action", null)
         //snack.setActionTextColor(Color.WHITE)
         val snackView = snack.view

@@ -11,16 +11,23 @@ private val CORRECT_BUZZ_PATTERN = longArrayOf(100, 100, 100, 100, 100, 100)
 private val PANIC_BUZZ_PATTERN = longArrayOf(0, 200)
 private val GAME_OVER_BUZZ_PATTERN = longArrayOf(0, 1000)
 private val NO_BUZZ_PATTERN = longArrayOf(0)
+
 class RestViewModel:ViewModel(){
     companion object{
         //Total time of the session
         private const val COUNTDOWN_TIME = 60000L
-
+        private const val MINUTE = COUNTDOWN_TIME/1000
         //Milliseconds in one second
         private const val ONE_SECOND = 1000L
 
         // This is when the session is over
         private const val DONE = 0L
+
+        private var currentMaxWorkTime = when(cycle % pref.getInt(WORK_CYCLES,4)){
+            0-> MINUTE * pref.getLong(BIG_BREAK,15)
+            else-> MINUTE * pref.getLong(REST_TIME,5)
+        }
+
     }
     enum class BuzzType(val pattern: LongArray) {
         CORRECT(CORRECT_BUZZ_PATTERN),
@@ -56,17 +63,19 @@ class RestViewModel:ViewModel(){
 
         timer= object : CountDownTimer(
             if(cycle % pref.getInt(WORK_CYCLES,4)!=0){COUNTDOWN_TIME * pref.getLong(REST_TIME,5)}
-                    else
-            COUNTDOWN_TIME * pref.getLong(BIG_BREAK,15),
+            else
+        COUNTDOWN_TIME * pref.getLong(BIG_BREAK,15),
             ONE_SECOND
         ) {
             override fun onFinish() {
                 _currentTime.value= DONE
                 _eventCountDownFinish.value=true
+                MainActivity.removeNotificationProgressBar()
             }
 
             override fun onTick(millisUntilFinished: Long) {
                 _currentTime.value=(millisUntilFinished/ ONE_SECOND)
+                MainActivity.updateCurrentNotification(currentMaxWorkTime.toInt(),currentTime.value!!.toInt(),"Rest Time")
             }
         }
         timer.start()

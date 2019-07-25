@@ -21,9 +21,9 @@ import com.example.sometest.R
 import com.example.sometest.cycle
 
 const val KEY_CYCLE="key_cycle"
-class RedStateFragment : Fragment(),LifecycleObserver {
+lateinit var viewModel: AppViewModel
 
-    private lateinit var viewModel: AppViewModel
+class RedStateFragment : Fragment(),LifecycleObserver {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
@@ -72,9 +72,7 @@ class RedStateFragment : Fragment(),LifecycleObserver {
     }
 
     private fun buzz(pattern: LongArray) {
-        activity?.getSystemService(Context.VIBRATOR_SERVICE)
-        val buzzer = activity?.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
-        //val buzzer = activity?.getSystemService<Vibrator>()
+        val buzzer = activity!!.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
         buzzer?.let {
              //Vibrate for 500 milliseconds
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {

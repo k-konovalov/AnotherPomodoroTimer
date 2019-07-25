@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="nameBigRestTime">Большой перерыв</string>
+    <string name="nameRestTime">Перерыв</string>
+    <string name="txtBeforeRed">Не беспокоить</string>
+    <string name="text_for_prefBtn">Сохранить настройки</string>
+    <string name="nameWorkTime">Рабочее время</string>
+    <string name="nameCyclesBeforeRest">Циклы</string>
+</resources>

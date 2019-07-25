@@ -59,10 +59,8 @@ class GreenStateFragment : Fragment(), LifecycleObserver {
     }
 
     private fun buzz(pattern: LongArray) {
-        activity?.getSystemService(Context.VIBRATOR_SERVICE)
-        val buzzer = activity?.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
-        //val buzzer = activity?.getSystemService<Vibrator>()
-        buzzer?.let {
+        val buzzer = activity!!.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+        buzzer.let {
             //Vibrate for 500 milliseconds
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 buzzer.vibrate(VibrationEffect.createWaveform(pattern, -1))

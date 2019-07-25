@@ -1,16 +1,18 @@
 <resources>
-    <string name="app_name">Simple Pomodoro</string>
+    <string name="app_name" translatable="false">Simple Pomodoro</string>
     <string name="txtBeforeRed">DO NOT DISTURB</string>
 
-    <string name="defaultWorkTime">25</string>
-    <string name="defaultRestTime">5</string>
-    <string name="defaultCyclesBeforeRest">4</string>
-    <string name="defaultBigRestTime">15</string>
+    <string name="defaultWorkTime" translatable="false">25</string>
+    <string name="defaultRestTime" translatable="false">5</string>
+    <string name="defaultCyclesBeforeRest" translatable="false">4</string>
+    <string name="defaultBigRestTime" translatable="false">15</string>
 
     <string name="nameWorkTime">Working Time(min)</string>
     <string name="nameRestTime">Break Time(min)</string>
     <string name="nameCyclesBeforeRest">Work Cycles</string>
-    <string name="nameBigRestTime">Big Break</string>
+    <string name="nameBigRestTime">Big Break (min)</string>
     <string name="text_for_prefBtn">Save Options</string>
+    <string name="channel_name">Timer</string>
+    <string name="channel_description">Notificate current state of timer</string>
 
 </resources>
