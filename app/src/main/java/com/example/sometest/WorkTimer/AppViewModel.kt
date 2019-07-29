@@ -27,13 +27,14 @@ class AppViewModel: ViewModel() {
     companion object{
         //Total time of the session
         private const val COUNTDOWN_TIME = 60000L
+        private const val MINUTE = COUNTDOWN_TIME/1000
         //Milliseconds in one second
         private const val ONE_SECOND = 1000L
 
         // This is when the session is over
         private const val DONE = 0L
 
-        private var currentMaxWorkTime = COUNTDOWN_TIME * pref.getLong(WORK_TIME,25)
+        private var currentMaxWorkTime = MINUTE * pref.getLong(WORK_TIME,25)
     }
     //Our timer
     private val timer: CountDownTimer
@@ -60,7 +61,7 @@ class AppViewModel: ViewModel() {
 //        resetList()
         timer = object : CountDownTimer(
             //тут достаем из настроек нужное нам значение. По дефолту оно будет каноническим для Pomodoro техники
-            currentMaxWorkTime,
+            6000L,
             ONE_SECOND
         ) {
             override fun onTick(millisUntilFinished: Long) {

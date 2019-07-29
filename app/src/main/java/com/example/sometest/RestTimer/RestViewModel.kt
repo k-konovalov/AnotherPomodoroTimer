@@ -16,6 +16,7 @@ class RestViewModel:ViewModel(){
     companion object{
         //Total time of the session
         private const val COUNTDOWN_TIME = 60000L
+        private const val MINUTE = COUNTDOWN_TIME/1000
         //Milliseconds in one second
         private const val ONE_SECOND = 1000L
 
@@ -23,8 +24,8 @@ class RestViewModel:ViewModel(){
         private const val DONE = 0L
 
         private var currentMaxWorkTime = when(cycle % pref.getInt(WORK_CYCLES,4)){
-            0-> COUNTDOWN_TIME * pref.getLong(BIG_BREAK,15)
-            else-> COUNTDOWN_TIME * pref.getLong(REST_TIME,5)
+            0-> MINUTE * pref.getLong(BIG_BREAK,15)
+            else-> MINUTE * pref.getLong(REST_TIME,5)
         }
 
     }
@@ -60,8 +61,10 @@ class RestViewModel:ViewModel(){
 
     init {
 
-        timer = object : CountDownTimer(
-            currentMaxWorkTime,
+        timer= object : CountDownTimer(
+            if(cycle % pref.getInt(WORK_CYCLES,4)!=0){COUNTDOWN_TIME * pref.getLong(REST_TIME,5)}
+            else
+        COUNTDOWN_TIME * pref.getLong(BIG_BREAK,15),
             ONE_SECOND
         ) {
             override fun onFinish() {
