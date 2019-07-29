@@ -61,7 +61,7 @@ class AppViewModel: ViewModel() {
 //        resetList()
         timer = object : CountDownTimer(
             //тут достаем из настроек нужное нам значение. По дефолту оно будет каноническим для Pomodoro техники
-            6000L,
+            COUNTDOWN_TIME*pref.getLong(WORK_TIME,25),
             ONE_SECOND
         ) {
             override fun onTick(millisUntilFinished: Long) {
