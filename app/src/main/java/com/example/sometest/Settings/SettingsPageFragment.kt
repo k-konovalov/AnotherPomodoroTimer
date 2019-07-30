@@ -1,5 +1,7 @@
 package com.example.sometest.Settings
 
+import android.app.Application
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -9,10 +11,11 @@ import android.widget.SeekBar
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.findNavController
 import com.example.sometest.*
+import com.example.sometest.Util.Converter
+import com.example.sometest.Util.PrefUtil
 import com.example.sometest.databinding.FragmentSettingsPageBinding
 
 class SettingsPageFragment : Fragment(){
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -20,22 +23,19 @@ class SettingsPageFragment : Fragment(){
         val binding: FragmentSettingsPageBinding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_settings_page,container,false
         )
-
-        binding.txtForRelaxTimer.setText(pref.getLong(REST_TIME,5).toString())
-        binding.txtForCyclesBeforeRest.setText(pref.getInt(WORK_CYCLES,4).toString())
-        binding.txtForBigRest.setText(pref.getLong(BIG_BREAK,15).toString())
-        binding.txtForWorkTimer.setText(pref.getLong(WORK_TIME,25).toString())
+        val context = activity!!.applicationContext
+        binding.txtForRelaxTimer.setText(PrefUtil.getRestTime(context).toString())
+        binding.txtForCyclesBeforeRest.setText(PrefUtil.getWorkCycles(context).toString())
+        binding.txtForBigRest.setText(PrefUtil.getBigBreak(context).toString())
+        binding.txtForWorkTimer.setText(PrefUtil.getWorkTime(context).toString())
 
 
 
         binding.btnSave.setOnClickListener {
-            // 3)тут с помощью эдитора кладем в преференсы значения, указывая ключ и собственно значение
-            editor.putLong(WORK_TIME,Converter.convertLong(binding.txtForWorkTimer.text.toString()))
-            editor.putLong(BIG_BREAK,Converter.convertLong(binding.txtForBigRest.text.toString()))
-            editor.putInt(WORK_CYCLES,Converter.convertInt(binding.txtForCyclesBeforeRest.text.toString()))
-            editor.putLong(REST_TIME,Converter.convertLong(binding.txtForRelaxTimer.text.toString()))
-            // 4)Как закончили класть данные в преференсы - обязательно апплай
-            editor.apply()
+            PrefUtil.setWorkTime(Converter.convertLong(binding.txtForWorkTimer.text.toString()),context)
+            PrefUtil.setBigBreak(Converter.convertLong(binding.txtForBigRest.text.toString()),context)
+            PrefUtil.setWorkCycles(Converter.convertInt(binding.txtForCyclesBeforeRest.text.toString()),context)
+            PrefUtil.setRestTime(Converter.convertLong(binding.txtForRelaxTimer.text.toString()),context)
             it.findNavController().navigate(SettingsPageFragmentDirections.actionSettingsPageToStartPage())
         }
 
@@ -85,15 +85,5 @@ class SettingsPageFragment : Fragment(){
 
         return binding.root
     }
-    //TODO: Refactor if needed
-    //Это тот самый костыль. Нам разные данные нужны, которые мы из текствью берем, в которых текст.
-    //Конвертить внутри моделей стринги в нужные нам типы - не нуль безопасно. Я решил эту проблему вот так.
-
- class Converter{
-     companion object{
-         fun convertLong(string: String): Long = string.toLong()
-         fun convertInt(string: String): Int = string.toInt()
-     }
- }
 
 }

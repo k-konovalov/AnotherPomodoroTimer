@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.os.Build
 import android.os.Bundle
+import android.preference.PreferenceManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
@@ -53,8 +54,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         //Так мы это дело получаем. Контекст мод прайват - по дефолту, до него имя для файлика
-        pref = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE)
-        editor = pref.edit()
+        pref = PreferenceManager.getDefaultSharedPreferences(this)
 
         //notification setup
         context = applicationContext
