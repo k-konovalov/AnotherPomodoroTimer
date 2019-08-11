@@ -67,6 +67,9 @@ class RedStateFragment : Fragment(),LifecycleObserver {
                 viewModel.onBuzzComplete()
             }
         })
+        binding.btnStop.setOnClickListener {
+            //TODO: Timer STOP
+        }
 
         return binding.root
     }
