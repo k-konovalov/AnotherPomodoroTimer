@@ -14,17 +14,23 @@ import android.bluetooth.BluetoothSocket
 import android.content.*
 import android.util.Log
 import android.widget.Toast
+import com.example.sometest.Util.ConnectThread
+import com.example.sometest.Util.ConnectThreadJava
+import java.io.IOException
+import java.util.*
 
 
-var clientSocket: BluetoothSocket? = null
+var socket: BluetoothSocket? = null
 val bluetoothAdapter:BluetoothAdapter? = BluetoothAdapter.getDefaultAdapter()
-lateinit var myDevice:BluetoothDevice
+lateinit var mConnectThread : ConnectThread
+lateinit var jConnectThread: ConnectThreadJava
+//lateinit var myDevice:BluetoothDevice
 var cycle: Int = 0
 val REQUEST_ENABLE_BT = 1
 val REQUEST_DISCOVER_DEVICES=2
 const val BLUETOOTH_TAG="Bluetooth"
-//Специально для тебя комменчу. чтобы знал что к чему
-//1)Тут у нас константы для ключей, т.к. в преференсах хранится все в структуре ключ -> значение
+val MY_UUID = UUID.randomUUID()
+
 const val APP_PREFERENCES ="app_settings"
 const val REST_TIME = "rest_time"
 const val WORK_TIME = "work_time"
@@ -33,8 +39,7 @@ const val BIG_BREAK = "big_break"
 
 const val CHANNEL_ID = "Simple Pomodoro"
 const val notificationId = 1
-//2)Тут объявляю префы и эдитор, чтобы пользоваться ими во всем проекте. Лэйт инитом, потому что другого варианта не нашел.
-//Кажется инициализировать его можно только в рантайме, но я могу и крупно ошибаться по этому поводу
+
 lateinit var pref: SharedPreferences
 lateinit var editor: SharedPreferences.Editor
 //notification setup
@@ -75,8 +80,7 @@ class MainActivity : AppCompatActivity() {
                         intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE)
                     Log.d(BLUETOOTH_TAG,"Device name: "+device.name.toString()+" Device mac: "+device.address.toString())
                     list.add(device)
-                    val deviceName = device.name
-                    val deviceHardwareAddress = device.address // MAC address
+
                 }
             }
         }
@@ -118,38 +122,43 @@ class MainActivity : AppCompatActivity() {
 
         if(bluetoothAdapter==null)
             Toast.makeText(this,"Устройство не поддерживает bluetooth.", Toast.LENGTH_SHORT)
-
         val bTfilter = IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED)
         registerReceiver(bTReceiver,bTfilter)
         if(bluetoothAdapter!=null && !bluetoothAdapter.isEnabled)
             startActivityForResult(Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE), REQUEST_ENABLE_BT)
 
-        bluetoothAdapter!!.startDiscovery()
-        val deviceFilter = IntentFilter(BluetoothDevice.ACTION_FOUND)
-        registerReceiver(deviceReceiver, deviceFilter)
+//        bluetoothAdapter!!.startDiscovery()
 
-        val discoverFilter = IntentFilter(BluetoothAdapter.ACTION_SCAN_MODE_CHANGED)
-        registerReceiver(discoverReceiver,discoverFilter)
+//        val deviceFilter = IntentFilter(BluetoothDevice.ACTION_FOUND)
+//        registerReceiver(deviceReceiver, deviceFilter)
+
+//        val discoverFilter = IntentFilter(BluetoothAdapter.ACTION_SCAN_MODE_CHANGED)
+//        registerReceiver(discoverReceiver,discoverFilter)
 
 //        val discoverIntent=Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE)
 //        discoverIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION,10)
 //        startActivityForResult(discoverIntent, REQUEST_DISCOVER_DEVICES)
 
+        val pairedDevices: Set<BluetoothDevice>? = bluetoothAdapter?.bondedDevices
+        pairedDevices?.forEach { device ->
+            Log.d(BLUETOOTH_TAG,"Paired "+device.name+" Address: "+device.address)
+        }
+        bluetoothAdapter!!.startDiscovery()
+//        mConnectThread = ConnectThread(bluetoothAdapter.getRemoteDevice("98:D3:21:F4:80:86"))
+//        mConnectThread.run()
+        jConnectThread = ConnectThreadJava(bluetoothAdapter!!.getRemoteDevice("98:D3:21:F4:80:86"))
+        jConnectThread.run()
+        //jConnectThread.write(0)
         pref = PreferenceManager.getDefaultSharedPreferences(this)
 
-        //notification setup
         context = applicationContext
         builder = NotificationCompat.Builder(this,CHANNEL_ID )
             .setSmallIcon(R.drawable.baseline_settings_black_24)
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .setOngoing(true)
-        //run it
         createNotificationChannel()
     }
-    //fun for notifications
     private fun createNotificationChannel() {
-        // Create the NotificationChannel, but only on API 26+ because
-        // the NotificationChannel class is new and not in the support library
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val name = getString(R.string.channel_name)
             val descriptionText = getString(R.string.channel_description)
@@ -157,13 +166,11 @@ class MainActivity : AppCompatActivity() {
             val channel = NotificationChannel(CHANNEL_ID, name, importance).apply {
                 description = descriptionText
             }
-            // Register the channel with the system
             val notificationManager: NotificationManager =
                 getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             notificationManager.createNotificationChannel(channel)
         }
     }
-
     override fun onDestroy() {
         builder.setOngoing(false)
         super.onDestroy()
@@ -172,9 +179,7 @@ class MainActivity : AppCompatActivity() {
         unregisterReceiver(bTReceiver)
 
     }
-
     override fun onStart() {
         super.onStart()
-
     }
 }

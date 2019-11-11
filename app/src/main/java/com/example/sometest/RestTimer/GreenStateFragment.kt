@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.os.VibrationEffect
 import android.os.Vibrator
 import android.text.format.DateUtils
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -16,9 +17,12 @@ import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.NavHostFragment.findNavController
+import com.example.sometest.*
+import com.example.sometest.Util.ConnectThreadJava
 //import com.example.sometest.GreenStateFragmentDirections
-import com.example.sometest.R
 import com.example.sometest.databinding.FragmentTimerGreenStateBinding
+import java.io.IOException
+import java.io.OutputStream
 
 
 class GreenStateFragment : Fragment(), LifecycleObserver {
@@ -29,11 +33,9 @@ class GreenStateFragment : Fragment(), LifecycleObserver {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         val binding: FragmentTimerGreenStateBinding=DataBindingUtil.inflate(
             inflater, R.layout.fragment_timer_green_state,container,false
         )
-
         viewModel=ViewModelProviders.of(this).get(RestViewModel::class.java)
 
         viewModel.currentTime.observe(this, Observer {newTime ->
@@ -55,17 +57,18 @@ class GreenStateFragment : Fragment(), LifecycleObserver {
                 viewModel.onBuzzComplete()
             }
         })
+        //mConnectThread.write(0)
+        jConnectThread.run()
+        jConnectThread.write(0)
         return binding.root
     }
 
     private fun buzz(pattern: LongArray) {
         val buzzer = activity!!.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
         buzzer.let {
-            //Vibrate for 500 milliseconds
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 buzzer.vibrate(VibrationEffect.createWaveform(pattern, -1))
             } else {
-                //deprecated in API 26
                 buzzer.vibrate(pattern, -1)
             }
         }

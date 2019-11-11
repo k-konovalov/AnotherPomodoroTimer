@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.os.VibrationEffect
 import android.os.Vibrator
 import android.text.format.DateUtils
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -16,9 +17,10 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.example.sometest.databinding.FragmentTimerRedStateBinding
 import androidx.navigation.fragment.NavHostFragment.findNavController
-import com.example.sometest.R
+import com.example.sometest.*
+import com.example.sometest.Util.ConnectThreadJava
 //import com.example.sometest.RedStateFragmentDirections
-import com.example.sometest.cycle
+import java.io.IOException
 
 const val KEY_CYCLE="key_cycle"
 lateinit var viewModel: AppViewModel
@@ -45,7 +47,9 @@ class RedStateFragment : Fragment(),LifecycleObserver {
             //Toast.makeText(activity, viewModel.resetList(), Toast.LENGTH_SHORT).show()
             viewModel.createSnack(it, cycle)
         }
-
+//        mConnectThread.write(1)
+        jConnectThread.run()
+        jConnectThread.write(1)
         viewModel=ViewModelProviders.of(this).get(AppViewModel::class.java)
 
         viewModel.currentTime.observe(this, Observer { newTime ->
@@ -60,7 +64,6 @@ class RedStateFragment : Fragment(),LifecycleObserver {
                 viewModel.onCountDownFinish()
             }
         })
-        // Buzzes when triggered with different buzz events
         viewModel.eventBuzz.observe(this, Observer { buzzType ->
             if (buzzType != AppViewModel.BuzzType.NO_BUZZ) {
                 buzz(buzzType.pattern)
@@ -70,21 +73,16 @@ class RedStateFragment : Fragment(),LifecycleObserver {
         binding.btnStop.setOnClickListener {
             //TODO: Timer STOP
         }
-
         return binding.root
     }
-
     private fun buzz(pattern: LongArray) {
         val buzzer = activity!!.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
         buzzer?.let {
-             //Vibrate for 500 milliseconds
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 buzzer.vibrate(VibrationEffect.createWaveform(pattern, -1))
             } else {
-                //deprecated in API 26
                 buzzer.vibrate(pattern, -1)
             }
         }
     }
-
 }
