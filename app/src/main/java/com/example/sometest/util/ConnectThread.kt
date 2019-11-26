@@ -1,7 +1,6 @@
-package com.example.sometest.Util
+package com.example.sometest.util
 
 import android.bluetooth.BluetoothDevice
-import android.bluetooth.BluetoothSocket
 import android.util.Log
 import com.example.sometest.BLUETOOTH_TAG
 import com.example.sometest.MY_UUID

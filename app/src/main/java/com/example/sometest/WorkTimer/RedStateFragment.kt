@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.os.VibrationEffect
 import android.os.Vibrator
 import android.text.format.DateUtils
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -18,9 +17,7 @@ import androidx.lifecycle.ViewModelProviders
 import com.example.sometest.databinding.FragmentTimerRedStateBinding
 import androidx.navigation.fragment.NavHostFragment.findNavController
 import com.example.sometest.*
-import com.example.sometest.Util.ConnectThreadJava
 //import com.example.sometest.RedStateFragmentDirections
-import java.io.IOException
 
 const val KEY_CYCLE="key_cycle"
 lateinit var viewModel: AppViewModel

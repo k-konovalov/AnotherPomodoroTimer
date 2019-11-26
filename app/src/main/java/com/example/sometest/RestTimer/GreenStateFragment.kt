@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.os.VibrationEffect
 import android.os.Vibrator
 import android.text.format.DateUtils
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -18,11 +17,8 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.NavHostFragment.findNavController
 import com.example.sometest.*
-import com.example.sometest.Util.ConnectThreadJava
 //import com.example.sometest.GreenStateFragmentDirections
 import com.example.sometest.databinding.FragmentTimerGreenStateBinding
-import java.io.IOException
-import java.io.OutputStream
 
 
 class GreenStateFragment : Fragment(), LifecycleObserver {

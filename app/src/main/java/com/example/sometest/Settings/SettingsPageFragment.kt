@@ -1,7 +1,5 @@
 package com.example.sometest.Settings
 
-import android.app.Application
-import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -11,8 +9,8 @@ import android.widget.SeekBar
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.findNavController
 import com.example.sometest.*
-import com.example.sometest.Util.Converter
-import com.example.sometest.Util.PrefUtil
+import com.example.sometest.util.Converter
+import com.example.sometest.util.PrefUtil
 import com.example.sometest.databinding.FragmentSettingsPageBinding
 
 class SettingsPageFragment : Fragment(){

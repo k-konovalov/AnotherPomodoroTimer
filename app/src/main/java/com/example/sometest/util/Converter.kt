@@ -1,4 +1,4 @@
-package com.example.sometest.Util
+package com.example.sometest.util
 
 class Converter {
     companion object{

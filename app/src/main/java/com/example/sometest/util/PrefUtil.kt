@@ -1,4 +1,4 @@
-package com.example.sometest.Util
+package com.example.sometest.util
 
 import android.content.Context
 import android.preference.PreferenceManager

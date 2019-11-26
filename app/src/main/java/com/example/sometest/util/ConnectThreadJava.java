@@ -1,4 +1,4 @@
-package com.example.sometest.Util;
+package com.example.sometest.util;
 
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
@@ -7,7 +7,6 @@ import android.util.Log;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.lang.reflect.Method;
-import java.text.Format;
 import java.util.UUID;
 
 import static com.example.sometest.MainActivityKt.BLUETOOTH_TAG;

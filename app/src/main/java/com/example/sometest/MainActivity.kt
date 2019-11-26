@@ -14,9 +14,8 @@ import android.bluetooth.BluetoothSocket
 import android.content.*
 import android.util.Log
 import android.widget.Toast
-import com.example.sometest.Util.ConnectThread
-import com.example.sometest.Util.ConnectThreadJava
-import java.io.IOException
+import com.example.sometest.util.ConnectThread
+import com.example.sometest.util.ConnectThreadJava
 import java.util.*
 
 
