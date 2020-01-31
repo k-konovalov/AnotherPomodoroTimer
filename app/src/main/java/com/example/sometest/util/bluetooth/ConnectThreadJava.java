@@ -1,8 +1,10 @@
-package com.example.sometest.util;
+package com.example.sometest.util.bluetooth;
 
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.util.Log;
+
+import com.example.sometest.MainActivityKt;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -26,7 +28,7 @@ public class ConnectThreadJava extends Thread {
         catch (Exception e){}
         try {
             outputStream=mmSocket.getOutputStream();
-        }catch (IOException ee){Log.d(BLUETOOTH_TAG,"Failed to get output Stream");}
+        }catch (IOException ee){Log.d(MainActivityKt.BLUETOOTH_TAG,"Failed to get output Stream");}
     }
 
     @Override
@@ -34,13 +36,13 @@ public class ConnectThreadJava extends Thread {
         if(getBluetoothAdapter().isDiscovering()){
         getBluetoothAdapter().cancelDiscovery();}
         try {
-            Log.d(BLUETOOTH_TAG,"Trying to connect with JavaThread");
+            Log.d(MainActivityKt.BLUETOOTH_TAG,"Trying to connect with JavaThread");
             mmSocket.connect();
             outputStream.write(0);
         }catch (IOException e){
             try{
                 mmSocket.close();
-                Log.d(BLUETOOTH_TAG,"Closing socket in JavaThread");
+                Log.d(MainActivityKt.BLUETOOTH_TAG,"Closing socket in JavaThread");
             }catch (IOException e1){
 
             }
@@ -52,7 +54,7 @@ public class ConnectThreadJava extends Thread {
 //            outputStream.write(val);
 //        }catch (IOException e){Log.d(BLUETOOTH_TAG,"Pass Failed");
 //        e.printStackTrace();}
-        Log.d(BLUETOOTH_TAG,"Trying to pass in javaThread"+val);
+        Log.d(MainActivityKt.BLUETOOTH_TAG,"Trying to pass in javaThread"+val);
         outputStream.write(val);
 //        try{
 //            mmSocket.close();

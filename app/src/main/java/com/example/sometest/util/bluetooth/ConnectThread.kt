@@ -1,4 +1,4 @@
-package com.example.sometest.util
+package com.example.sometest.util.bluetooth
 
 import android.bluetooth.BluetoothDevice
 import android.util.Log
