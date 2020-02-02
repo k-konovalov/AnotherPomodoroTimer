@@ -1,43 +1,52 @@
 package com.example.sometest.timer
 
+import android.animation.ValueAnimator
 import android.content.Context
+import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.os.VibrationEffect
 import android.os.Vibrator
 import android.text.format.DateUtils
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.LinearInterpolator
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
-import com.example.sometest.databinding.FragmentTimerRedStateBinding
 import com.example.sometest.R
+import com.example.sometest.databinding.FragmentTimerBinding
 import com.example.sometest.timer.TimerViewModel.Companion.cycle
 import com.example.sometest.util.KEY_CYCLE
 
+
 class TimerFragment : Fragment(), LifecycleObserver {
     private lateinit var viewModel: TimerViewModel
+    private lateinit var binding: FragmentTimerBinding
+
+    private val redColorBg by lazy { ContextCompat.getColor(context!!, R.color.backForRed) }
+    private val greenColorBg by lazy { ContextCompat.getColor(context!!, R.color.backForGreen) }
+    private val valueAnimator by lazy { ValueAnimator.ofArgb(greenColorBg, redColorBg) }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val binding: FragmentTimerRedStateBinding = DataBindingUtil.inflate(
-            inflater, R.layout.fragment_timer_red_state, container, false
+        binding = DataBindingUtil.inflate(
+            inflater, R.layout.fragment_timer, container, false
         )
-
-        if (savedInstanceState != null) {
-            cycle = savedInstanceState.getInt(KEY_CYCLE, 0)
-        }
+        if (savedInstanceState != null) cycle = savedInstanceState.getInt(KEY_CYCLE, 0)
         cycle++
 
         binding.apply {
             initSetOnClickListeners(this)
             initObserves(this)
+            initValueAnimator(this)
         }
 
         //Bluetooth
@@ -48,7 +57,7 @@ class TimerFragment : Fragment(), LifecycleObserver {
         return binding.root
     }
 
-    private fun initSetOnClickListeners(binding: FragmentTimerRedStateBinding){
+    private fun initSetOnClickListeners(binding: FragmentTimerBinding){
         binding.txtTextView.setOnClickListener {
             viewModel.createSnack(it, cycle)
         }
@@ -56,12 +65,13 @@ class TimerFragment : Fragment(), LifecycleObserver {
             //TODO: Timer STOP
             cycle--
             viewModel.onCountDownFinish()
-            findNavController().popBackStack(R.id.action_timer_red_state_to_start_page,false)
+            viewModel.stopTimer()
+            findNavController().navigate(R.id.action_timer_red_state_to_start_page)
         }
     }
 
     private fun initObserves(
-        binding:FragmentTimerRedStateBinding
+        binding:FragmentTimerBinding
     ){
         viewModel = ViewModelProviders.of(this).get(TimerViewModel::class.java)
 
@@ -79,6 +89,20 @@ class TimerFragment : Fragment(), LifecycleObserver {
                 viewModel.onBuzzComplete()
             }
         })
+        viewModel.currentTimerStatus.observe(this, Observer { status ->
+            if (status == "worktime") valueAnimator.start()
+            if (status == "resttime") valueAnimator.reverse()
+        })
+    }
+
+    private fun initValueAnimator(binding: FragmentTimerBinding){
+        valueAnimator.duration = 500
+        valueAnimator.interpolator = LinearInterpolator()
+        valueAnimator.addUpdateListener { valueAnimator ->
+            binding.timerLayout.setBackgroundColor(
+                valueAnimator.animatedValue as Int
+            )
+        }
     }
 
     private fun buzz(pattern: LongArray) {

@@ -6,6 +6,7 @@
             android:layout_height="match_parent"
             tools:context=".timer.TimerFragment"
             android:background="@color/backForRed"
+            android:id="@+id/timerLayout"
     >
         <TextView
                 android:text="25:00" style="@style/TextForTimer" android:id="@+id/txtTextView"

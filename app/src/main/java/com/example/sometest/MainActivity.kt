@@ -6,7 +6,6 @@ import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
 import android.os.Build
 import android.os.Bundle
-import android.preference.PreferenceManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
@@ -23,14 +22,12 @@ var socket: BluetoothSocket? = null
 val bluetoothAdapter:BluetoothAdapter? = BluetoothAdapter.getDefaultAdapter()
 lateinit var mConnectThread : ConnectThread
 lateinit var jConnectThread: ConnectThreadJava
-//lateinit var myDevice:BluetoothDevice
+lateinit var myDevice:BluetoothDevice
 val REQUEST_ENABLE_BT = 1
 val REQUEST_DISCOVER_DEVICES=2
 const val BLUETOOTH_TAG="Bluetooth"
 val MY_UUID = UUID.randomUUID()
 
-lateinit var pref: SharedPreferences
-lateinit var editor: SharedPreferences.Editor
 //notification setup
 lateinit private var builder: NotificationCompat.Builder
 lateinit private var context:Context
@@ -49,10 +46,7 @@ class MainActivity : AppCompatActivity() {
 
         fun removeNotificationProgressBar(){
             with(NotificationManagerCompat.from(context)) {
-                // notificationId is a unique int for each notification that you must define
-                builder.setProgress(0, 0, false)
-                    .setOnlyAlertOnce(false)
-                notify(notificationId, builder.build())
+                this.cancelAll()
             }
         }
     }
@@ -92,13 +86,20 @@ class MainActivity : AppCompatActivity() {
         jConnectThread.run()
         jConnectThread.write(0)*/
 
-        pref = PreferenceManager.getDefaultSharedPreferences(this)
         context = applicationContext
         builder = NotificationCompat.Builder(this,CHANNEL_ID )
             .setSmallIcon(R.drawable.baseline_settings_black_24)
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .setOngoing(true)
         createNotificationChannel()
+    }
+
+    override fun onDestroy() {
+        builder.setOngoing(false)
+        super.onDestroy()
+        /*unregisterReceiver(deviceReceiver)
+        unregisterReceiver(discoverReceiver)
+        unregisterReceiver(bTReceiver)*/
     }
 
     private fun createNotificationChannel() {
@@ -113,15 +114,6 @@ class MainActivity : AppCompatActivity() {
                 getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             notificationManager.createNotificationChannel(channel)
         }
-    }
-
-    override fun onDestroy() {
-        builder.setOngoing(false)
-        super.onDestroy()
-        /*unregisterReceiver(deviceReceiver)
-        unregisterReceiver(discoverReceiver)
-        unregisterReceiver(bTReceiver)*/
-
     }
 
     /*    var list:MutableList<BluetoothDevice> = mutableListOf()

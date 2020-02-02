@@ -11,5 +11,5 @@ const val KEY_CYCLE = "key_cycle"
 
 val CORRECT_BUZZ_PATTERN = longArrayOf(100, 100, 100, 100, 100, 100)
 val PANIC_BUZZ_PATTERN = longArrayOf(0, 200)
-val GAME_OVER_BUZZ_PATTERN = longArrayOf(0, 1000)
+val GAME_OVER_BUZZ_PATTERN = longArrayOf(100, 1000)
 val NO_BUZZ_PATTERN = longArrayOf(0)

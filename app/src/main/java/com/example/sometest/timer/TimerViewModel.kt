@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import android.os.CountDownTimer
+import android.util.Log
 import android.view.View
 import android.widget.TextView
 import com.example.sometest.*
@@ -32,24 +33,23 @@ class TimerViewModel : ViewModel() {
         /*private const val workTime = MINUTE * POMODORO_DEFAULT_WORK_TIME
         private const val restTime = MINUTE * POMODORO_DEFAULT_REST_TIME*/
 
-        private const val workTime = 10 * ONE_SECOND
-        private const val restTime = 5 * ONE_SECOND
+        private const val workTime = 7 * ONE_SECOND
+        private const val restTime = 4 * ONE_SECOND
 
         private const val DONE = 0L
     }
 
     //Our timer
-    private lateinit var timer:CountDownTimer
-    private var currentTimerStatus = "worktime"
+    private var timer:CountDownTimer = initTimer(workTime)
 
     //тут достаем из настроек нужное нам значение. По дефолту оно будет каноническим для Pomodoro техники
     private fun initTimer(time:Long) = object : CountDownTimer(time, ONE_SECOND){
         override fun onTick(millisUntilFinished: Long) {
             _currentTime.value = (millisUntilFinished / ONE_SECOND)
-            MainActivity.updateCurrentNotification(
-                workTime.toInt(),
+            if(_currentTimerStatus.value != "off") MainActivity.updateCurrentNotification(
+                time.toInt() / ONE_SECOND.toInt(),
                 currentTime.value!!.toInt(),
-                currentTimerStatus
+                _currentTimerStatus.value.toString()
             )
         }
 
@@ -57,12 +57,20 @@ class TimerViewModel : ViewModel() {
             _currentTime.value = DONE
             _eventBuzz.value = BuzzType.GAME_OVER
             _eventCountDownFinish.value = true
-            MainActivity.removeNotificationProgressBar()
+        }
+
+        init {
+            Log.e("test time:",time.toString())
+            this.start()
         }
     }
 
     //LiveData and encapsulation
     //Time
+    private val _currentTimerStatus = MutableLiveData<String>()
+    val currentTimerStatus: LiveData<String>
+        get() = _currentTimerStatus
+
     private val _currentTime = MutableLiveData<Long>()
     val currentTime: LiveData<Long>
         get() = _currentTime
@@ -76,25 +84,29 @@ class TimerViewModel : ViewModel() {
     val eventBuzz: LiveData<BuzzType>
         get() = _eventBuzz
 
+    init {
+        _currentTimerStatus.value = "worktime"
+    }
+
     fun onCountDownFinish() {
         _eventCountDownFinish.value = false
         timerRestart()
     }
 
-    init {
-        timer = initTimer(workTime)
-        timer.start()
-    }
-
     private fun timerRestart(){
-        timer.cancel()
-        if(currentTimerStatus == "worktime") {
-            currentTimerStatus = "resttime"
-            initTimer(restTime)}
-        else {
-            currentTimerStatus = "worktime"
-            initTimer(workTime)}
-        timer.start()
+        Log.e("test","currentTimerStatus: " + _currentTimerStatus.value)
+        when (_currentTimerStatus.value) {
+            "resttime" -> {
+                _currentTimerStatus.value = "worktime"
+                initTimer(workTime)
+                cycle++
+            }
+            "worktime" -> {
+                _currentTimerStatus.value = "resttime"
+                initTimer(restTime)
+            }
+            else -> return
+        }
     }
 
     fun onBuzzComplete() {
@@ -114,5 +126,11 @@ class TimerViewModel : ViewModel() {
         textView.textSize = 28f
         textView.textAlignment = View.TEXT_ALIGNMENT_CENTER
         snack.show()
+    }
+
+    fun stopTimer() {
+        MainActivity.removeNotificationProgressBar()
+        _currentTimerStatus.value = "off"
+        timer.onFinish()
     }
 }

@@ -21,7 +21,7 @@
             android:id="@+id/timer_red_state"
             android:name="com.example.sometest.timer.TimerFragment"
             android:label="fragment_timer_red_state"
-            tools:layout="@layout/fragment_timer_red_state">
+            tools:layout="@layout/fragment_timer">
         <action
                 android:id="@+id/action_timer_red_state_to_start_page"
                 app:destination="@id/start_page" />
