@@ -8,10 +8,11 @@ import android.os.CountDownTimer
 import android.util.Log
 import android.view.View
 import android.widget.TextView
+import androidx.core.app.NotificationManagerCompat
 import com.example.sometest.*
+import com.example.sometest.TimerService.Companion.cycle
 import com.example.sometest.util.*
 import com.google.android.material.snackbar.Snackbar
-
 
 class TimerViewModel : ViewModel() {
     enum class BuzzType(val pattern: LongArray) {
@@ -20,51 +21,39 @@ class TimerViewModel : ViewModel() {
         COUNTDOWN_PANIC(PANIC_BUZZ_PATTERN),
         NO_BUZZ(NO_BUZZ_PATTERN)
     }
+    val POMODORO_DEFAULT_WORK_TIME = 25
+    val POMODORO_DEFAULT_REST_TIME = 5
+    private val MINUTE = 60000L
+    val ONE_SECOND = 1000L //ms
+    private val workTime = 7 * ONE_SECOND
+    private val restTime = 4 * ONE_SECOND
+    var currentMaxTime = 0L
 
     companion object {
-        var cycle: Int = 0
-        //Total time of the session
-        const val POMODORO_DEFAULT_WORK_TIME = 25
-        const val POMODORO_DEFAULT_REST_TIME = 5
-        private const val MINUTE = 60000L
-        private const val ONE_SECOND = 1000L //ms
-
-
         /*private const val workTime = MINUTE * POMODORO_DEFAULT_WORK_TIME
         private const val restTime = MINUTE * POMODORO_DEFAULT_REST_TIME*/
+    }
 
-        private const val workTime = 7 * ONE_SECOND
-        private const val restTime = 4 * ONE_SECOND
-
-        private const val DONE = 0L
+    init {
+        TimerService.timer = initTimer(workTime)
     }
 
     //Our timer
-    private var timer:CountDownTimer = initTimer(workTime)
-
-    //тут достаем из настроек нужное нам значение. По дефолту оно будет каноническим для Pomodoro техники
     private fun initTimer(time:Long) = object : CountDownTimer(time, ONE_SECOND){
         override fun onTick(millisUntilFinished: Long) {
             _currentTime.value = (millisUntilFinished / ONE_SECOND)
-            if(_currentTimerStatus.value != "off") MainActivity.updateCurrentNotification(
-                time.toInt() / ONE_SECOND.toInt(),
-                currentTime.value!!.toInt(),
-                _currentTimerStatus.value.toString()
-            )
         }
 
         override fun onFinish() {
-            _currentTime.value = DONE
-            _eventBuzz.value = BuzzType.GAME_OVER
             _eventCountDownFinish.value = true
         }
 
         init {
             Log.e("test time:",time.toString())
+            currentMaxTime = time
             this.start()
         }
     }
-
     //LiveData and encapsulation
     //Time
     private val _currentTimerStatus = MutableLiveData<String>()
@@ -89,6 +78,8 @@ class TimerViewModel : ViewModel() {
     }
 
     fun onCountDownFinish() {
+        _currentTime.value = 0L
+        _eventBuzz.value = BuzzType.GAME_OVER
         _eventCountDownFinish.value = false
         timerRestart()
     }
@@ -126,11 +117,5 @@ class TimerViewModel : ViewModel() {
         textView.textSize = 28f
         textView.textAlignment = View.TEXT_ALIGNMENT_CENTER
         snack.show()
-    }
-
-    fun stopTimer() {
-        MainActivity.removeNotificationProgressBar()
-        _currentTimerStatus.value = "off"
-        timer.onFinish()
     }
 }

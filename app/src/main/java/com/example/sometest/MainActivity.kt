@@ -1,18 +1,20 @@
 package com.example.sometest
 
+import android.app.Activity
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
 import android.os.Build
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import android.bluetooth.BluetoothSocket
 import android.content.*
 import android.util.Log
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import com.example.sometest.timer.TimerViewModel
 import com.example.sometest.util.*
 import com.example.sometest.util.bluetooth.ConnectThread
 import com.example.sometest.util.bluetooth.ConnectThreadJava
@@ -28,32 +30,16 @@ val REQUEST_DISCOVER_DEVICES=2
 const val BLUETOOTH_TAG="Bluetooth"
 val MY_UUID = UUID.randomUUID()
 
-//notification setup
-lateinit private var builder: NotificationCompat.Builder
-lateinit private var context:Context
-
 class MainActivity : AppCompatActivity() {
-    companion object {
-        fun updateCurrentNotification(max:Int,progress:Int,currentStatus:String) {
-            NotificationManagerCompat.from(context).apply {
-                builder.setProgress(max, progress,false)
-                    .setOnlyAlertOnce(true)
-                    .setContentTitle(currentStatus)
-                    //.setStyle(NotificationCompat.BigTextStyle)
-                notify(notificationId, builder.build())
-            }
-        }
-
-        fun removeNotificationProgressBar(){
-            with(NotificationManagerCompat.from(context)) {
-                this.cancelAll()
-            }
-        }
+    companion object{
+        lateinit var context:Context
     }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        createNotificationChannel()
+
+        context = applicationContext
         /*if(bluetoothAdapter==null)
             Toast.makeText(this,"Устройство не поддерживает bluetooth.", Toast.LENGTH_SHORT)
         val bTfilter = IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED)
@@ -86,20 +72,8 @@ class MainActivity : AppCompatActivity() {
         jConnectThread.run()
         jConnectThread.write(0)*/
 
-        context = applicationContext
-        builder = NotificationCompat.Builder(this,CHANNEL_ID )
-            .setSmallIcon(R.drawable.baseline_settings_black_24)
-            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-            .setOngoing(true)
-        createNotificationChannel()
-    }
 
-    override fun onDestroy() {
-        builder.setOngoing(false)
-        super.onDestroy()
-        /*unregisterReceiver(deviceReceiver)
-        unregisterReceiver(discoverReceiver)
-        unregisterReceiver(bTReceiver)*/
+
     }
 
     private fun createNotificationChannel() {

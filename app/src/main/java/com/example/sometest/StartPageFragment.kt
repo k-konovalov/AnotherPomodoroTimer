@@ -8,7 +8,6 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.example.sometest.databinding.FragmentStartPageBinding
-import com.example.sometest.timer.TimerViewModel.Companion.cycle
 
 class StartPageFragment : Fragment() {
 
@@ -17,12 +16,11 @@ class StartPageFragment : Fragment() {
             inflater, R.layout.fragment_start_page, container, false)
         binding.btnStart.setOnClickListener {
               v: View ->
-            cycle = 0
             v.findNavController().navigate(StartPageFragmentDirections.actionStartPageToTimerRedState())
         }
         setHasOptionsMenu(true)
 
-        return binding.root
+        return binding.startPage
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
