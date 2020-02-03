@@ -1,4 +1,4 @@
-package com.example.sometest.timer
+package com.example.sometest.Fragments
 
 import android.animation.ValueAnimator
 import android.content.Context
@@ -26,6 +26,7 @@ import com.example.sometest.R
 import com.example.sometest.TimerService
 import com.example.sometest.TimerService.Companion.cycle
 import com.example.sometest.databinding.FragmentTimerBinding
+import com.example.sometest.timer.TimerViewModel
 import com.example.sometest.util.CHANNEL_ID
 import com.example.sometest.util.KEY_CYCLE
 import com.example.sometest.util.notificationId

@@ -1,4 +1,4 @@
-package com.example.sometest.Settings
+package com.example.sometest.Fragments
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -9,6 +9,7 @@ import android.widget.SeekBar
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.findNavController
 import com.example.sometest.*
+import com.example.sometest.Settings.SettingsPageFragmentDirections
 import com.example.sometest.util.Converter
 import com.example.sometest.util.PrefUtil
 import com.example.sometest.databinding.FragmentSettingsPageBinding

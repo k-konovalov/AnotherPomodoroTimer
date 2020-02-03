@@ -1,4 +1,4 @@
-package com.example.sometest
+package com.example.sometest.Fragments
 
 import android.os.Bundle
 import android.view.*
@@ -7,13 +7,16 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
+import com.example.sometest.R
+import com.example.sometest.StartPageFragmentDirections
 import com.example.sometest.databinding.FragmentStartPageBinding
 
 class StartPageFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val binding:FragmentStartPageBinding = DataBindingUtil.inflate(
-            inflater, R.layout.fragment_start_page, container, false)
+            inflater,
+            R.layout.fragment_start_page, container, false)
         binding.btnStart.setOnClickListener {
               v: View ->
             v.findNavController().navigate(StartPageFragmentDirections.actionStartPageToTimerRedState())
