@@ -13,3 +13,7 @@ val CORRECT_BUZZ_PATTERN = longArrayOf(100, 100, 100, 100, 100, 100)
 val PANIC_BUZZ_PATTERN = longArrayOf(0, 200)
 val GAME_OVER_BUZZ_PATTERN = longArrayOf(100, 1000)
 val NO_BUZZ_PATTERN = longArrayOf(0)
+
+val REQUEST_ENABLE_BT = 1
+val REQUEST_DISCOVER_DEVICES = 2
+const val BLUETOOTH_TAG = "Bluetooth"
