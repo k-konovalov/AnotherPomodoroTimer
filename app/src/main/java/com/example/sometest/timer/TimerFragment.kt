@@ -97,7 +97,8 @@ class TimerFragment : Fragment(), LifecycleObserver {
             updateCurrentNotification(
                 viewModel.currentMaxTime.toInt() / viewModel.ONE_SECOND.toInt(),
                 newTime.toInt(),
-                viewModel.currentTimerStatus.value.toString())
+                viewModel.currentTimerStatus.value.toString()
+            )
         })
         viewModel.currentTimerStatus.observe(viewLifecycleOwner, Observer { status ->
             if (status == "worktime") valueAnimator.start()
@@ -138,11 +139,6 @@ class TimerFragment : Fragment(), LifecycleObserver {
         }
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        outState.putInt(KEY_CYCLE, cycle)
-    }
-
     private fun updateCurrentNotification(max: Int, progress: Int, currentStatus: String) {
         NotificationManagerCompat.from(MainActivity.context).apply {
             TimerService.builder.setProgress(max, progress, false)
@@ -151,5 +147,10 @@ class TimerFragment : Fragment(), LifecycleObserver {
             //.setStyle(NotificationCompat.BigTextStyle)
             notify(notificationId, TimerService.builder.build())
         }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putInt(KEY_CYCLE, cycle)
     }
 }

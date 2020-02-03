@@ -21,6 +21,7 @@ class TimerViewModel : ViewModel() {
         COUNTDOWN_PANIC(PANIC_BUZZ_PATTERN),
         NO_BUZZ(NO_BUZZ_PATTERN)
     }
+
     val POMODORO_DEFAULT_WORK_TIME = 25
     val POMODORO_DEFAULT_REST_TIME = 5
     private val MINUTE = 60000L
@@ -39,7 +40,7 @@ class TimerViewModel : ViewModel() {
     }
 
     //Our timer
-    private fun initTimer(time:Long) = object : CountDownTimer(time, ONE_SECOND){
+    private fun initTimer(time: Long) = object : CountDownTimer(time, ONE_SECOND) {
         override fun onTick(millisUntilFinished: Long) {
             _currentTime.value = (millisUntilFinished / ONE_SECOND)
         }
@@ -49,11 +50,12 @@ class TimerViewModel : ViewModel() {
         }
 
         init {
-            Log.e("test time:",time.toString())
+            Log.e("test time:", time.toString())
             currentMaxTime = time
             this.start()
         }
     }
+
     //LiveData and encapsulation
     //Time
     private val _currentTimerStatus = MutableLiveData<String>()
@@ -84,8 +86,8 @@ class TimerViewModel : ViewModel() {
         timerRestart()
     }
 
-    private fun timerRestart(){
-        Log.e("test","currentTimerStatus: " + _currentTimerStatus.value)
+    private fun timerRestart() {
+        Log.e("test", "currentTimerStatus: " + _currentTimerStatus.value)
         when (_currentTimerStatus.value) {
             "resttime" -> {
                 _currentTimerStatus.value = "worktime"
