@@ -1,16 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/itemLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:divider="@mipmap/ic_launcher"
         android:orientation="vertical"
         android:padding="5dp">
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/border_shadow"
+            android:orientation="horizontal">
+
+        <TextView
+                android:id="@+id/txtId"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Id"
+                android:textAlignment="center"
+                android:textSize="14sp" />
+
+        <TextView
+                android:id="@+id/txtKey"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Key"
+                android:textAlignment="center"
+                android:textSize="14sp" />
+    </LinearLayout>
 
     <TextView
             android:id="@+id/txtTaskName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="8dp"
-            android:textSize="30sp"
+            android:textAlignment="center"
+            android:textSize="18sp"
             tools:text="Some important task. With really wide text." />
+
 </LinearLayout>

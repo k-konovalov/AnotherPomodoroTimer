@@ -1,4 +1,4 @@
-package com.example.sometest.Fragments
+package com.example.sometest.fragments
 
 import android.animation.ValueAnimator
 import android.content.Context

@@ -1,5 +1,7 @@
 package com.example.sometest.util
 
 data class TaskItem(
-    val text:String
+    val id:Int,
+    val key:String,
+    val summary:String
 )

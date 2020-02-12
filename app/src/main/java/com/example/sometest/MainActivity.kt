@@ -11,6 +11,7 @@ import com.example.sometest.util.*
 class MainActivity : AppCompatActivity() {
     companion object{
         lateinit var context:Context
+        var issueId = 0
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

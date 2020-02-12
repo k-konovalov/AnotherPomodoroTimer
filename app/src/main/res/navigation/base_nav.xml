@@ -6,7 +6,7 @@
             app:startDestination="@id/start_page">
     <fragment
             android:id="@+id/start_page"
-            android:name="com.example.sometest.Fragments.StartPageFragment"
+            android:name="com.example.sometest.fragments.StartPageFragment"
             android:label="fragment_start_page"
             tools:layout="@layout/fragment_start_page">
         <action
@@ -19,14 +19,14 @@
     </fragment>
     <fragment
             android:id="@+id/timer_red_state"
-            android:name="com.example.sometest.Fragments.TimerFragment"
+            android:name="com.example.sometest.fragments.TimerFragment"
             android:label="fragment_timer_red_state"
             tools:layout="@layout/fragment_timer">
         <action
                 android:id="@+id/action_timer_red_state_to_start_page"
                 app:destination="@id/start_page" />
     </fragment>
-    <fragment android:id="@+id/settings_page" android:name="com.example.sometest.Fragments.SettingsPageFragment"
+    <fragment android:id="@+id/settings_page" android:name="com.example.sometest.fragments.SettingsPageFragment"
               android:label="fragment_settings_page"
     tools:layout="@layout/fragment_settings_page">
         <action android:id="@+id/action_settings_page_to_start_page" app:destination="@id/start_page"

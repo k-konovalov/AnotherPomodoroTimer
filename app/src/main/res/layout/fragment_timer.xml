@@ -4,7 +4,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:context=".Fragments.TimerFragment"
+            tools:context=".fragments.TimerFragment"
             android:background="@color/backForRed"
             android:id="@+id/timerLayout"
     >
