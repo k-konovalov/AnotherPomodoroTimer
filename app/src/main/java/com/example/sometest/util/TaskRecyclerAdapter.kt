@@ -1,5 +1,6 @@
 package com.example.sometest.util
 
+import android.app.AlertDialog
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
@@ -7,13 +8,16 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
+import androidx.navigation.NavController
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.sometest.MainActivity
 import com.example.sometest.R
+import com.example.sometest.fragments.StartPageFragmentDirections
 import com.example.sometest.network.IssueDTO
-import okio.blackholeSink
 
-class TaskRecyclerAdapter : RecyclerView.Adapter<TaskRecyclerAdapter.ViewHolder>() {
+class TaskRecyclerAdapter(private val navController: NavController) : RecyclerView.Adapter<TaskRecyclerAdapter.ViewHolder>() {
     private val taskList = mutableListOf<TaskItem>()
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -41,6 +45,10 @@ class TaskRecyclerAdapter : RecyclerView.Adapter<TaskRecyclerAdapter.ViewHolder>
 
         holder.someLayout.setOnClickListener {
             Toast.makeText(MainActivity.context,"${holder.someSummary.text}",Toast.LENGTH_SHORT).show()
+            MainActivity.currentIssueId = item.id.toString()
+            MainActivity.currentIssueSummary = item.summary
+
+            navController.navigate(StartPageFragmentDirections.actionStartPageToTimerRedState())
         }
     }
 

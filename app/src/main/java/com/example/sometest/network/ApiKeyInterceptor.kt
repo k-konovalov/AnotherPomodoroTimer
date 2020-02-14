@@ -16,7 +16,6 @@ class ApiKeyInterceptor(user: String, apiKey: String) : Interceptor {
 
     @Throws(IOException::class)
     override fun intercept(@NonNull chain: Interceptor.Chain): Response {
-
         val request = chain.request()
             .newBuilder()
             .addHeader("Accept","application/json")

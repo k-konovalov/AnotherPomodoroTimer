@@ -10,8 +10,10 @@ import com.example.sometest.util.*
 
 class MainActivity : AppCompatActivity() {
     companion object{
+        var currentIssueSummary: String = ""
         lateinit var context:Context
-        var issueId = 0
+        var currentIssueId = ""
+        var interceptorType:NetworkHelper.INTERCEPTOR_TYPE = NetworkHelper.INTERCEPTOR_TYPE.EMPTY
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

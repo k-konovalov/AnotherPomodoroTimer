@@ -54,7 +54,7 @@ class TimerFragment : Fragment(), LifecycleObserver {
             initObserves(this)
             initValueAnimator(this)
         }
-
+        binding.txtTimerIssueSummary.text = MainActivity.currentIssueSummary
         //Bluetooth
         //mConnectThread.write(1)
         //jConnectThread.run()

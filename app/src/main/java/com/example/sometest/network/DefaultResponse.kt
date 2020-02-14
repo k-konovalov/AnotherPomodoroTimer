@@ -6,6 +6,7 @@ data class DefaultIssuesResponse <T>(
     @SerializedName("issues") var issues: T? = null
 )
 
-data class DefaultWorklogsResponse <T>(
-    @SerializedName("worklogs") var worklogs: T? = null
+data class DefaultWorklogsResponse(
+    @SerializedName("total") val total: Int? = null,
+    @SerializedName("worklogs") var worklogs: List<OneWorklogDTO>? = null
 )

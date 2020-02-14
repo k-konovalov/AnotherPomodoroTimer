@@ -1,7 +1,10 @@
 package com.example.sometest.network
 
+import android.util.Log
 import androidx.annotation.NonNull
+import com.example.sometest.MainActivity
 import com.example.sometest.util.API_KEY
+import com.example.sometest.util.NetworkHelper
 import com.example.sometest.util.USER
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -9,7 +12,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
-class RestApi{
+class RestApi() {
     companion object {
 
         private val URL = "https://vrarlab.atlassian.net/"
@@ -17,9 +20,11 @@ class RestApi{
         private var sRestApi: RestApi? = null
 
         fun getInstance(): RestApi?{
-            if (sRestApi == null) {
+            //ToDo: Bug with creation of instance
+            //if (sRestApi == null) {
                 sRestApi = RestApi()
-            }
+            //}
+
             return sRestApi
         }
     }
@@ -41,15 +46,20 @@ class RestApi{
         val networkLogInterceptor = HttpLoggingInterceptor()
         networkLogInterceptor.setLevel(HttpLoggingInterceptor.Level.BASIC)
 
-        return OkHttpClient.Builder()
-            //TODO 6.1: Настраиваем Custom перехватчик ApiKeyInereptor
+        val smth = OkHttpClient.Builder()
             .addInterceptor(ApiKeyInterceptor(USER, API_KEY)) // Добавление пользователя \ ключа к каждому запросу
             .addInterceptor(networkLogInterceptor)
             //Настройка таймаутов
             .connectTimeout(TIMEOUT_IN_SECONDS.toLong(), TimeUnit.SECONDS)
             .writeTimeout(TIMEOUT_IN_SECONDS.toLong(), TimeUnit.SECONDS)
             .readTimeout(TIMEOUT_IN_SECONDS.toLong(), TimeUnit.SECONDS)
-            .build()
+        //TODO: if getWorklog???
+        Log.e("RestApi",MainActivity.interceptorType.toString())
+        if (MainActivity.interceptorType == NetworkHelper.INTERCEPTOR_TYPE.WORKLOG) {
+            smth.addInterceptor(WorklogInterceptor(MainActivity.currentIssueId))
+        }
+
+        return smth.build()
     }
 
     init {

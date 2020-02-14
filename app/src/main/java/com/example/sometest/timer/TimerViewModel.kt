@@ -8,11 +8,16 @@ import android.os.CountDownTimer
 import android.util.Log
 import android.view.View
 import android.widget.TextView
+import androidx.annotation.NonNull
 import androidx.core.app.NotificationManagerCompat
 import com.example.sometest.*
 import com.example.sometest.TimerService.Companion.cycle
+import com.example.sometest.network.*
 import com.example.sometest.util.*
 import com.google.android.material.snackbar.Snackbar
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class TimerViewModel : ViewModel() {
     enum class BuzzType(val pattern: LongArray) {
@@ -21,6 +26,10 @@ class TimerViewModel : ViewModel() {
         COUNTDOWN_PANIC(PANIC_BUZZ_PATTERN),
         NO_BUZZ(NO_BUZZ_PATTERN)
     }
+    val TAG = "TimerViewModel"
+    private val networkHelper = NetworkHelper()
+    private var getWorklogsRequest: Call<DefaultWorklogsResponse>? = null
+    private var addWorklogRequest: Call<DefaultWorklogsResponse>? = null
 
     val POMODORO_DEFAULT_WORK_TIME = 25
     val POMODORO_DEFAULT_REST_TIME = 5
@@ -93,6 +102,7 @@ class TimerViewModel : ViewModel() {
                 _currentTimerStatus.value = "worktime"
                 initTimer(workTime)
                 cycle++
+                ifWorklogsExist()
             }
             "worktime" -> {
                 _currentTimerStatus.value = "resttime"
@@ -119,5 +129,82 @@ class TimerViewModel : ViewModel() {
         textView.textSize = 28f
         textView.textAlignment = View.TEXT_ALIGNMENT_CENTER
         snack.show()
+    }
+
+    private fun ifWorklogsExist(){
+        networkHelper.cancelCurrentRequestIfNeeded(getWorklogsRequest)
+
+        MainActivity.interceptorType = NetworkHelper.INTERCEPTOR_TYPE.WORKLOG
+        getWorklogsRequest = RestApi.getInstance()?.dataEndpoint()?.getWorklogs()
+        getWorklogsRequest?.enqueue(object: Callback<DefaultWorklogsResponse> {
+            override fun onResponse(
+                @NonNull call: Call<DefaultWorklogsResponse>,
+                @NonNull response: Response<DefaultWorklogsResponse>
+            ) {
+                MainActivity.interceptorType = NetworkHelper.INTERCEPTOR_TYPE.EMPTY
+
+                if (networkHelper.isSuccessfulAndBodyNotNull(response)) {
+                    val total = response.body()?.total
+                    Log.e(TAG, "Worklogs total $total")
+                    if(total == 0) {
+                        //create new worklog
+
+                    } else {
+                        //update existing worklog
+                        val results = response.body()?.worklogs
+                        networkHelper.isResultDataNotNullOrEmpty(results)
+                    }
+
+                }
+            }
+
+            override fun onFailure(
+                @NonNull call: Call<DefaultWorklogsResponse>,
+                @NonNull t: Throwable
+            ) {
+                MainActivity.interceptorType = NetworkHelper.INTERCEPTOR_TYPE.EMPTY
+                Log.e(TAG,"Baby don't hurt me",t)
+            }
+        })
+    }
+
+    private fun checkResponseAndShowState(response:Response<DefaultWorklogsResponse>) {
+        //1
+        if (!response.isSuccessful) {
+            //showState(State.ServerError)
+            Log.d(TAG,"Server error")
+            return
+        }
+
+        val body = response.body()
+
+        if (body == null) {
+            //showState(State.HasNoData)
+            Log.d(TAG,"Worklogs Body null")
+            return
+        }
+        //--------------
+
+        val total = body.total
+        Log.e(TAG,"Worklogs total $total")
+        val results = body.worklogs
+
+        //2
+        if (results == null) {
+            //showState(State.HasNoData)
+            Log.d(TAG,"Worklogs Data null")
+            return
+        }
+
+        if (results.isEmpty()) {
+            //showState(State.HasNoData)
+            Log.d(TAG,"Worklogs Data Empty")
+            return
+        }
+        Log.d(TAG,"${results} triggered")
+        //--------------
+        //taskRecyclerAdapter.replaceTasks(results)
+
+        //showState(State.HasData)
     }
 }

@@ -19,11 +19,6 @@ data class FieldsDTO(
 //@SerializedName("timespent") var timespent:Int? = null, //in seconds 25min = 1500 = 25 * 60s
 //@SerializedName("worklog") var worklog:Int? = null, //in seconds 25min = 1500 = 25 * 60s
 
-
-data class WorklogsDTO(
-    @SerializedName("worklogs") var url: List<OneWorklogDTO>? = null
-)
-
 data class OneWorklogDTO(
     @SerializedName("worklogs") var url: String? = null
 )
