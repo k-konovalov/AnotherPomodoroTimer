@@ -19,12 +19,10 @@ class ApiKeyInterceptor(user: String, apiKey: String) : Interceptor {
         val request = chain.request()
             .newBuilder()
             .addHeader("Accept","application/json")
-            .addHeader("Content-Type","application/json")
+            //.addHeader("Content-Type","application/json")
             .addHeader("Authorization", "Basic $base64auth")
             .build()
 
         return chain.proceed(request)
     }
-
-
 }

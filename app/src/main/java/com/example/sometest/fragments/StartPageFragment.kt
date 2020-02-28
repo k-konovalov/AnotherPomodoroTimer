@@ -3,12 +3,12 @@ package com.example.sometest.fragments
 import android.app.AlertDialog
 import android.content.DialogInterface
 import android.os.Bundle
+import android.text.format.DateFormat
 import android.util.Log
 import android.view.*
-import android.widget.AdapterView
+import android.widget.Toast
 import androidx.annotation.NonNull
 import androidx.databinding.DataBindingUtil
-
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
@@ -17,7 +17,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.sometest.R
 import com.example.sometest.databinding.FragmentStartPageBinding
 import com.example.sometest.network.DefaultIssuesResponse
-import com.example.sometest.network.DefaultWorklogsResponse
 import com.example.sometest.network.IssueDTO
 import com.example.sometest.network.RestApi
 import com.example.sometest.util.NetworkHelper
@@ -25,6 +24,8 @@ import com.example.sometest.util.TaskRecyclerAdapter
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.util.*
+
 
 class StartPageFragment : Fragment() {
     val TAG = "StartPageFragment"
@@ -59,10 +60,25 @@ class StartPageFragment : Fragment() {
         return binding.startPage
     }
 
+    override fun onResume() {
+        //val timestamp = System.currentTimeMillis()
+        //Log.e(TAG, timestamp.toString())
+        //Toast.makeText(context,timestamp.toString(),Toast.LENGTH_SHORT).show()
+        //Toast.makeText(context,getReminingTime(),Toast.LENGTH_SHORT).show()
+        super.onResume()
+    }
+
+    private fun getReminingTime(): String? {
+        // "2020-02-17T05:29:50.833+0000"
+        val delegate = "yyyy-MM-ddThh:mm:ss+0000"
+        return DateFormat.format(delegate, Calendar.getInstance().time).toString()
+    }
+
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu, menu)
         super.onCreateOptionsMenu(menu, inflater)
     }
+
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if(item.title == "Settings"){

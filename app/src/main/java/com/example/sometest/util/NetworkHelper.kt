@@ -8,7 +8,8 @@ import retrofit2.Response
 
 class NetworkHelper {
     enum class INTERCEPTOR_TYPE {
-        WORKLOG,
+        ADD_WORKLOG,
+        GET_WORKLOG,
         ISSUE,
         EMPTY
     }

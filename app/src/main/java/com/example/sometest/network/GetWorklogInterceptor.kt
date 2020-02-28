@@ -7,7 +7,7 @@ import okhttp3.Response
 import java.io.IOException
 import java.nio.charset.Charset
 
-class WorklogInterceptor(val issueId:String) : Interceptor {
+class GetWorklogInterceptor(val issueId:String) : Interceptor {
     @Throws(IOException::class)
     override fun intercept(@NonNull chain: Interceptor.Chain): Response {
         val requestWithoutNewPath = chain.request()

@@ -1,16 +1,16 @@
 package com.example.sometest.network
 
 import androidx.annotation.NonNull
+import okhttp3.RequestBody
 import retrofit2.Call
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.Query
+import retrofit2.http.*
 
 interface DataEndpoint {
     ///rest/api/2/issue/{issueIdOrKey}/worklog
     @NonNull
-    @POST("/rest/api/3/issue")
-    fun addWorklog(): Call<DefaultWorklogsResponse>
+    @Headers("Content-type: application/json;charset=UTF-8")
+    @POST("/rest/api/2/issue/")
+    fun addWorklog(@Body body: WorklogRequestDTO): Call<DefaultWorklogsResponse>
 
     @NonNull
     @GET("/rest/api/3/issue/")

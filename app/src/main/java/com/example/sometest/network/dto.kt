@@ -23,6 +23,12 @@ data class OneWorklogDTO(
     @SerializedName("worklogs") var url: String? = null
 )
 
+
+data class WorklogRequestDTO(
+    @SerializedName("timeSpentSeconds") var timeSpentSeconds: Int? = null,
+    @SerializedName("comment") var comment: String? = null,
+    @SerializedName("started") var started: String? = null
+)
 //"timetracking": {
 //"remainingEstimate": "0m",
 //"timeSpent": "50m",

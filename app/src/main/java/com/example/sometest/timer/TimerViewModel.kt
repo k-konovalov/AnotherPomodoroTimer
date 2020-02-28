@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import android.os.CountDownTimer
+import android.text.format.DateFormat
 import android.util.Log
 import android.view.View
 import android.widget.TextView
@@ -15,9 +16,14 @@ import com.example.sometest.TimerService.Companion.cycle
 import com.example.sometest.network.*
 import com.example.sometest.util.*
 import com.google.android.material.snackbar.Snackbar
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.Request
+import okhttp3.RequestBody.Companion.toRequestBody
+import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.util.*
 
 class TimerViewModel : ViewModel() {
     enum class BuzzType(val pattern: LongArray) {
@@ -26,6 +32,7 @@ class TimerViewModel : ViewModel() {
         COUNTDOWN_PANIC(PANIC_BUZZ_PATTERN),
         NO_BUZZ(NO_BUZZ_PATTERN)
     }
+
     val TAG = "TimerViewModel"
     private val networkHelper = NetworkHelper()
     private var getWorklogsRequest: Call<DefaultWorklogsResponse>? = null
@@ -35,14 +42,9 @@ class TimerViewModel : ViewModel() {
     val POMODORO_DEFAULT_REST_TIME = 5
     private val MINUTE = 60000L
     val ONE_SECOND = 1000L //ms
-    private val workTime = 7 * ONE_SECOND
-    private val restTime = 4 * ONE_SECOND
+    private val workTime = 10 * ONE_SECOND
+    private val restTime = 10 * ONE_SECOND
     var currentMaxTime = 0L
-
-    companion object {
-        /*private const val workTime = MINUTE * POMODORO_DEFAULT_WORK_TIME
-        private const val restTime = MINUTE * POMODORO_DEFAULT_REST_TIME*/
-    }
 
     init {
         TimerService.timer = initTimer(workTime)
@@ -134,28 +136,15 @@ class TimerViewModel : ViewModel() {
     private fun ifWorklogsExist(){
         networkHelper.cancelCurrentRequestIfNeeded(getWorklogsRequest)
 
-        MainActivity.interceptorType = NetworkHelper.INTERCEPTOR_TYPE.WORKLOG
+        MainActivity.interceptorType = NetworkHelper.INTERCEPTOR_TYPE.GET_WORKLOG
+
         getWorklogsRequest = RestApi.getInstance()?.dataEndpoint()?.getWorklogs()
         getWorklogsRequest?.enqueue(object: Callback<DefaultWorklogsResponse> {
             override fun onResponse(
                 @NonNull call: Call<DefaultWorklogsResponse>,
                 @NonNull response: Response<DefaultWorklogsResponse>
             ) {
-                MainActivity.interceptorType = NetworkHelper.INTERCEPTOR_TYPE.EMPTY
-
-                if (networkHelper.isSuccessfulAndBodyNotNull(response)) {
-                    val total = response.body()?.total
-                    Log.e(TAG, "Worklogs total $total")
-                    if(total == 0) {
-                        //create new worklog
-
-                    } else {
-                        //update existing worklog
-                        val results = response.body()?.worklogs
-                        networkHelper.isResultDataNotNullOrEmpty(results)
-                    }
-
-                }
+                checkIfWorklogsExist(response)
             }
 
             override fun onFailure(
@@ -168,43 +157,43 @@ class TimerViewModel : ViewModel() {
         })
     }
 
-    private fun checkResponseAndShowState(response:Response<DefaultWorklogsResponse>) {
-        //1
-        if (!response.isSuccessful) {
-            //showState(State.ServerError)
-            Log.d(TAG,"Server error")
-            return
+    private fun checkIfWorklogsExist(response: Response<DefaultWorklogsResponse>) {
+        if (networkHelper.isSuccessfulAndBodyNotNull(response)) {
+            Log.e(TAG, "Worklogs total ${response.body()?.total}")
+            addWorklog()
         }
+    }
 
-        val body = response.body()
+    private fun addWorklog(){
+        networkHelper.cancelCurrentRequestIfNeeded(addWorklogRequest)
+        val time = (POMODORO_DEFAULT_WORK_TIME*ONE_SECOND).toInt() + (POMODORO_DEFAULT_REST_TIME*ONE_SECOND).toInt()
+        val body = WorklogRequestDTO(time, "I did some work here", "${getRemainingTime()}")
 
-        if (body == null) {
-            //showState(State.HasNoData)
-            Log.d(TAG,"Worklogs Body null")
-            return
-        }
-        //--------------
+        //Журнал работ не должен быть пуст.
+        addWorklogRequest = RestApi.getInstance()?.dataEndpoint()?.addWorklog(body)
+        addWorklogRequest?.enqueue(object: Callback<DefaultWorklogsResponse> {
+            override fun onResponse(
+                @NonNull call: Call<DefaultWorklogsResponse>,
+                @NonNull response: Response<DefaultWorklogsResponse>
+            ) {
+                Log.e(TAG,"Add Worklog response: " + response.toString())
+                Log.e(TAG,"Add Worklog response: " + response.body().toString())
+                MainActivity.interceptorType = NetworkHelper.INTERCEPTOR_TYPE.EMPTY
+            }
 
-        val total = body.total
-        Log.e(TAG,"Worklogs total $total")
-        val results = body.worklogs
+            override fun onFailure(
+                @NonNull call: Call<DefaultWorklogsResponse>,
+                @NonNull t: Throwable
+            ) {
+                MainActivity.interceptorType = NetworkHelper.INTERCEPTOR_TYPE.EMPTY
+                Log.e(TAG,"Baby don't hurt me",t)
+            }
+        })
+    }
 
-        //2
-        if (results == null) {
-            //showState(State.HasNoData)
-            Log.d(TAG,"Worklogs Data null")
-            return
-        }
-
-        if (results.isEmpty()) {
-            //showState(State.HasNoData)
-            Log.d(TAG,"Worklogs Data Empty")
-            return
-        }
-        Log.d(TAG,"${results} triggered")
-        //--------------
-        //taskRecyclerAdapter.replaceTasks(results)
-
-        //showState(State.HasData)
+    private fun getRemainingTime(): String? {
+        // "2020-02-17T05:29:50.833+0000"
+        val delegate = "yyyy-MM-ddThh:mm:ss.000+0000"
+        return DateFormat.format(delegate, Calendar.getInstance().time).toString()
     }
 }

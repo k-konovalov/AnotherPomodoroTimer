@@ -55,8 +55,8 @@ class RestApi() {
             .readTimeout(TIMEOUT_IN_SECONDS.toLong(), TimeUnit.SECONDS)
         //TODO: if getWorklog???
         Log.e("RestApi",MainActivity.interceptorType.toString())
-        if (MainActivity.interceptorType == NetworkHelper.INTERCEPTOR_TYPE.WORKLOG) {
-            smth.addInterceptor(WorklogInterceptor(MainActivity.currentIssueId))
+        if (MainActivity.interceptorType == NetworkHelper.INTERCEPTOR_TYPE.GET_WORKLOG) {
+            smth.addInterceptor(GetWorklogInterceptor(MainActivity.currentIssueId))
         }
 
         return smth.build()
