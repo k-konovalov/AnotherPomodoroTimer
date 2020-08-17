@@ -3,28 +3,31 @@ package com.example.sometest.util.bluetooth
 import android.bluetooth.BluetoothDevice
 import android.util.Log
 import com.example.sometest.BLUETOOTH_TAG
-import com.example.sometest.MY_UUID
-import com.example.sometest.bluetoothAdapter
 import java.io.IOException
+import java.util.*
 
-class ConnectThread(device: BluetoothDevice) : Thread() {
-
+class ConnectThread(private val device: BluetoothDevice, private val cancelDiscovery: () -> Unit) : Thread() {
 //    private val mmSocket: BluetoothSocket? by lazy(LazyThreadSafetyMode.NONE) {
 //        device.createRfcommSocketToServiceRecord(MY_UUID)
 //    }
-    val mmSocket = device.createRfcommSocketToServiceRecord(MY_UUID)
-    private val outStream=mmSocket.outputStream
+
+    private val MY_UUID = UUID.randomUUID()
+    private val mmSocket = device.createRfcommSocketToServiceRecord(MY_UUID)
+    private val outStream = mmSocket.outputStream
     override fun run() {
-        if (mmSocket ==null )Log.d(BLUETOOTH_TAG,"WTF!!!!!!!")
-        bluetoothAdapter?.cancelDiscovery()
-        try{
+        if (mmSocket == null ) {
+            Log.d(BLUETOOTH_TAG,"WTF!!!!!!!")
+            return
+        }
+        cancelDiscovery()
+        try {
             mmSocket.connect()
-        }catch (e:IOException){
+        } catch (e: IOException) {
             try {
                 mmSocket.close()
-                Log.d(BLUETOOTH_TAG,"Socket closed")
-            } catch (e:IOException){
-                Log.d(BLUETOOTH_TAG,"Unable to create socket during collection failure",e)
+                Log.d(BLUETOOTH_TAG, "Socket closed")
+            } catch (e: IOException) {
+                Log.d(BLUETOOTH_TAG, "Unable to create socket during collection failure", e)
             }
         }
     }

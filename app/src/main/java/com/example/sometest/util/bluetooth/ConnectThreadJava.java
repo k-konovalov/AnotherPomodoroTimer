@@ -1,5 +1,6 @@
 package com.example.sometest.util.bluetooth;
 
+import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.util.Log;
@@ -11,15 +12,13 @@ import java.io.OutputStream;
 import java.lang.reflect.Method;
 import java.util.UUID;
 
-import static com.example.sometest.MainActivityKt.BLUETOOTH_TAG;
-import static com.example.sometest.MainActivityKt.getBluetoothAdapter;
-
 public class ConnectThreadJava extends Thread {
     private BluetoothSocket mmSocket;
     Method m;
     OutputStream outputStream;
+    BluetoothAdapter bluetoothAdapter;
     private static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
-    public ConnectThreadJava(BluetoothDevice device){
+    public ConnectThreadJava(BluetoothDevice device, BluetoothAdapter bluetoothAdapter){
         try {
         m = device.getClass().getMethod("createInsecureRfcommSocketToServiceRecord", UUID.class);}
         catch (NoSuchMethodException e){}
@@ -33,8 +32,7 @@ public class ConnectThreadJava extends Thread {
 
     @Override
     public void run() {
-        if(getBluetoothAdapter().isDiscovering()){
-        getBluetoothAdapter().cancelDiscovery();}
+        if(bluetoothAdapter.isDiscovering()){ bluetoothAdapter.cancelDiscovery();}
         try {
             Log.d(MainActivityKt.BLUETOOTH_TAG,"Trying to connect with JavaThread");
             mmSocket.connect();
