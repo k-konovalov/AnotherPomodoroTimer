@@ -1,24 +1,16 @@
 package com.example.sometest
 
-
 import android.Manifest
-import android.app.Activity
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.bluetooth.BluetoothAdapter
+import android.bluetooth.BluetoothDevice
 import android.os.Build
 import android.os.Bundle
 import android.content.*
-import android.util.Log
-import android.widget.Toast
 import androidx.activity.viewModels
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.example.sometest.util.*
-import com.example.sometest.util.bluetooth.ConnectThread
-import com.example.sometest.util.bluetooth.ConnectThreadJava
-import java.util.*
-val REQUEST_ENABLE_BT = 1
-val REQUEST_DISCOVER_DEVICES=2
 const val BLUETOOTH_TAG="Bluetooth"
 
 class MainActivity : AppCompatActivity() {

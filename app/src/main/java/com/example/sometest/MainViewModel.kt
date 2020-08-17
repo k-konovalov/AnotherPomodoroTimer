@@ -10,6 +10,8 @@ import android.content.IntentFilter
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.sometest.util.REQUEST_DISCOVER_DEVICES
+import com.example.sometest.util.REQUEST_ENABLE_BT
 import com.example.sometest.util.bluetooth.ConnectThread
 import com.example.sometest.util.bluetooth.ConnectThreadJava
 import java.lang.Exception
