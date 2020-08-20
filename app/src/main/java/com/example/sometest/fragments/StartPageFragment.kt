@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.text.format.DateFormat
 import android.util.Log
 import android.view.*
-import android.widget.Toast
 import androidx.annotation.NonNull
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -14,6 +13,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.sometest.BtService
 import com.example.sometest.R
 import com.example.sometest.databinding.FragmentStartPageBinding
 import com.example.sometest.network.DefaultIssuesResponse
@@ -21,6 +21,7 @@ import com.example.sometest.network.IssueDTO
 import com.example.sometest.network.RestApi
 import com.example.sometest.util.NetworkHelper
 import com.example.sometest.util.TaskRecyclerAdapter
+import kotlinx.android.synthetic.main.fragment_start_page.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -58,6 +59,16 @@ class StartPageFragment : Fragment() {
         setHasOptionsMenu(true)
 
         return binding.startPage
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        switchLed.setOnCheckedChangeListener { _, isChecked ->
+            BtService.bluetoothKit.run {
+                if (isChecked) write("1".toByteArray())
+                else write("2".toByteArray())
+            }
+        }
     }
 
     override fun onResume() {

@@ -3,21 +3,21 @@ package com.example.sometest
 import android.Manifest
 import android.app.NotificationChannel
 import android.app.NotificationManager
-import android.bluetooth.BluetoothAdapter
-import android.bluetooth.BluetoothDevice
+import android.content.Context
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.content.*
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import com.example.sometest.util.*
+import com.example.sometest.util.CHANNEL_ID
+import com.example.sometest.util.NetworkHelper
+
 const val BLUETOOTH_TAG="Bluetooth"
 
 class MainActivity : AppCompatActivity() {
     private val viewModel: MainViewModel by viewModels()
 	    companion object{
         var currentIssueSummary: String = ""
-        lateinit var context:Context
         var currentIssueId = ""
         var interceptorType:NetworkHelper.INTERCEPTOR_TYPE = NetworkHelper.INTERCEPTOR_TYPE.EMPTY
     }
@@ -27,15 +27,12 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         createNotificationChannel()
 
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) requestPermissions(arrayOf(Manifest.permission.BLUETOOTH), 0)
-        registerBtReceiver()
-        viewModel.prepareBt()
-        viewModel.btState.observe(this, androidx.lifecycle.Observer {
-            startActivityForResult(
-                it.first, it.second
-            )
-        })
+
+        val intent = Intent(this, BtService::class.java)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            startForegroundService(intent)
+        } else startService(intent)
     }
 
     private fun createNotificationChannel() {
@@ -52,13 +49,8 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun registerBtReceiver(){
-        val bTfilter = IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED)
-        val deviceFilter = IntentFilter(BluetoothDevice.ACTION_FOUND)
-        val discoverFilter = IntentFilter(BluetoothAdapter.ACTION_SCAN_MODE_CHANGED)
-
-        registerReceiver(viewModel.deviceReceiver, deviceFilter)
-        registerReceiver(viewModel.discoverReceiver, discoverFilter)
-        registerReceiver(viewModel.bTReceiver, bTfilter)
+    override fun onDestroy() {
+        stopService(Intent(this, BtService::class.java))
+        super.onDestroy()
     }
 }

@@ -60,7 +60,7 @@ class TimerFragment : Fragment(), LifecycleObserver {
         //jConnectThread.run()
         //jConnectThread.write(1)
 
-        TimerService.builder = NotificationCompat.Builder(MainActivity.context, CHANNEL_ID)
+        TimerService.builder = NotificationCompat.Builder(requireContext(), CHANNEL_ID)
             .setSmallIcon(R.drawable.baseline_settings_black_24)
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
 
@@ -141,7 +141,7 @@ class TimerFragment : Fragment(), LifecycleObserver {
     }
 
     private fun updateCurrentNotification(max: Int, progress: Int, currentStatus: String) {
-        NotificationManagerCompat.from(MainActivity.context).apply {
+        NotificationManagerCompat.from(requireContext()).apply {
             TimerService.builder.setProgress(max, progress, false)
                 .setOnlyAlertOnce(true)
                 .setContentTitle(currentStatus)
